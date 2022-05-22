@@ -1,0 +1,27 @@
+github: https://github.com/DawnEve/scIGV
+On Y station: /home/wangjl/test/IGVjs_test
+
+$ cd /home/wangjl/test/IGVjs_test
+$ git init
+$ git config user.name "jimmy"
+$ git config user.email  "JimmyMall@live.com"
+#
+$ git remote add origin git@eve:DawnEve/scIGV.git
+$ git remote -v
+
+# some git add and git commit
+$ git push -u origin master
+
+
+###################
+# coding while learning igv.js
+###################
+v0.0.1@south index1.html basic example, by the author
+v0.0.2@south index1_2.html use local ref and local bam files.
+# ==> commit
+# =========> push to origin master
+
+
+
+ref:
+https://github.com/paul-shannon/igvR

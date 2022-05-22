@@ -1,0 +1,38 @@
+<meta charset=utf8>
+<pre>
+test1: 
+help: https://github.com/igvteam/igv.js/wiki
+</pre>
+
+<script src="js/igv.min.js"></script>
+
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div"); //获取对象
+    
+	// 设置参数
+    var options =
+	{
+		genome: "hg38", //基因组版本
+		//locus: "chr8:127,736,588-127,739,371", //染色体和坐标范围
+		locus: "chr11:69,650,640-69,654,951", //染色体和坐标范围
+		tracks: [
+		    // 设置轨道信息
+			{
+				"name": "CCND1",
+				"url": "https://s3.amazonaws.com/1000genomes/data/HG00103/alignment/HG00103.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram",
+				"indexURL": "https://s3.amazonaws.com/1000genomes/data/HG00103/alignment/HG00103.alt_bwamem_GRCh38DH.20150718.GBR.low_coverage.cram.crai",
+				"format": "cram",
+				
+				"color": "red", //set colors
+			}
+		]
+	};
+
+	// 初始化
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");
+		})
+</script>

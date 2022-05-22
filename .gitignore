@@ -1,0 +1,12 @@
+# ignore dirs
+backup/
+dustbin/
+
+bam/
+ref/
+
+__pycache__/
+.ipynb_checkpoints/
+
+# ignore files
+

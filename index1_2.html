@@ -1,0 +1,104 @@
+<meta charset=utf8>
+<pre>
+test1_2: 载入本地参考基因组和 本地bam文件 
+help: https://github.com/igvteam/igv.js/wiki
+Ask: How to use cache when loading fasta files:  https://github.com/igvteam/igv.js/issues/1508
+</pre>
+
+<script src="js/igv.min.js"></script>
+
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div"); //获取对象
+    
+	var hg19_remote={
+			"id": "hg19",
+			"name": "Human (GRCh37/hg19)",
+			"fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta",
+			"indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta.fai",
+			"cytobandURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/cytoBand.txt",
+			"aliasURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/hg19_alias.tab",
+			"tracks": [
+			  {
+				"name": "Refseq Genes",
+				"format": "refgene",
+				"id": "hg19_genes",
+				"url": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz",
+				"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
+				"visibilityWindow": -1,
+				"supportsWholeGenome": false,
+				"removable": false,
+				"order": 1000000,
+				"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
+			  }
+			],
+			"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+		  }
+    
+	//下载到本地
+	var hg19_local={
+			"id": "hg19",
+			"name": "Human (GRCh37/hg19)",
+			"fastaURL": "ref/hg19/hg19.fasta", //?someRandomSeed=0
+			"indexURL": "ref/hg19/hg19.fasta.fai",
+			"cytobandURL": "ref/hg19/cytoBand.txt",
+			"aliasURL": "ref/hg19/hg19_alias.tab",
+			
+			"tracks": [
+			  {
+				"name": "Refseq Genes",
+				"format": "refgene",
+				"id": "hg19_genes",
+				"url": "ref/hg19/ncbiRefSeq.sorted.txt.gz",
+				"indexURL": "ref/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
+				"visibilityWindow": -1,
+				"supportsWholeGenome": false,
+				"removable": false,
+				"order": 1000000,
+				"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
+			  }
+			],
+			"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+		  }
+	
+	// 设置参数
+    var options =
+	{
+		//genome: "hg19", //基因组版本
+		//locus: "chr8:127,736,588-127,739,371", //染色体和坐标范围
+		locus: "chr2:136,870,918-136,876,719", //染色体和坐标范围
+		
+		//fastURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta",
+		//indexURL: "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/hg19.fasta.fai",
+		//https://s3.amazonaws.com/igv.org.genomes/hg19/ncbiRefSeq.sorted.txt.gz
+		//https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg19/cytoBand.txt
+		
+		//fastURL: "fasta/hg19.fasta",
+		//indexURL: "fasta/hg19.fasta.fai",
+		
+
+		 //reference: hg19_remote,
+		 reference: hg19_local,
+
+		
+		
+		tracks: [
+		    // 设置轨道信息
+			{
+				"name": "Cluster1_NK",
+				"url": "bam/down/BMMC_donor1_cluster1.down0.05.bam",
+				"indexURL": "bam/down/BMMC_donor1_cluster1.down0.05.bam.bai",
+				"format": "bam",
+				
+				"color": "purple", //set colors
+			}
+		]
+	};
+
+	// 初始化
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");
+		})
+</script>
