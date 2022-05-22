@@ -18,6 +18,7 @@ $ git push -u origin master
 ###################
 v0.0.1@south index1.html basic example, by the author
 v0.0.2@south index1_2.html use local ref and local bam files.
+v0.0.3@south index2.html coverageTrackHeight, hide alignment
 # ==> commit
 # =========> push to origin master
 

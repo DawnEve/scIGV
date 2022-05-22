@@ -1,0 +1,108 @@
+<meta charset=utf8>
+<pre>
+test2: local bam
+help: https://github.com/igvteam/igv.js/wiki
+</pre>
+
+<!--
+https://blog.jqueryui.com/2014/10/jquery-ui-1-11-2/
+<link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"/>
+
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css" href="https://igv.org/web/release/1.0.9/igv-1.0.9.css">
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+-->
+
+<script src="js/igv.min.js"></script>
+
+
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div"); //获取对象
+    
+	// 设置参数
+    var options =
+	{
+		// 必须参数
+		genome: "hg19", //基因组版本
+		locus: "chr8:144,661,785-144,662,802", //染色体和坐标范围
+		
+		
+		//可选参数
+		//showCenterGuideButton: false,
+		height: 1000, //没作用？
+		//showAlignments:false, //这里设置没有作用
+		
+		
+		tracks: [
+		    // 设置轨道信息
+			{
+				"name": "Cluster1_NK",
+				"url": "bam/down/BMMC_donor1_cluster1.down0.05.bam",
+				"indexURL": "bam/down/BMMC_donor1_cluster1.down0.05.bam.bai",
+				"format": "bam",
+				//"type": "annotation",
+				
+				"color": "red", //set colors
+
+				showAlignments: false,
+
+				height:150, //默认总高度 300
+				coverageTrackHeight:150, //默认覆盖度高度 50
+				alignmentRowHeight:0, //比对的reads的高度，一条默认是 14
+				
+			},
+			
+			
+			{
+				"name": "Cluster3_B",
+				"url": "bam/down/BMMC_donor1_cluster3.down0.05.bam",
+				"indexURL": "bam/down/BMMC_donor1_cluster3.down0.05.bam.bai",
+				"format": "bam",
+				
+				"color": "blue", //set colors
+				
+				showAlignments: false,
+				height:80,
+				coverageTrackHeight:80,
+				//visibilityWindow: -1,
+				//alignmentRowHeight:0, 
+			},
+
+		]
+		
+		
+	};
+
+	// 初始化
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");
+			//browser.search('UBA52') //查找目标基因
+			//browser.search('chr10:1000-2000') //an explicit location
+			//browser.zoomIn(); //放大
+			//browser.zoomOut(); //缩小
+			
+			
+			
+		if(0){
+			browser.loadTrack({
+			  url: 'bam/down/BMMC_donor1_cluster3.down0.05.bam',
+			  indexURL: "bam/down/BMMC_donor1_cluster3.down0.05.bam.bai",
+			  label: 'Cluster3'
+				})
+			.then(function (newTrack) {
+				console.log("Track loaded: " + newTrack.name);
+			})
+			.catch(function (error)  {
+			   // Handle error
+				console.log("Error: " + error);
+			})
+		}
+			
+			
+		})
+</script>
