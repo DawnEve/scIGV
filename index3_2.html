@@ -1,0 +1,119 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test3_2: BigWig not like bam peaks, why? less tracks;
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div");
+
+    var options =
+	{
+		genome: "hg19",
+		//locus: "chr8:144,661,785-144,662,802",
+		locus: "chr19:49,468,234-49,471,806",
+		
+		tracks: [
+			{
+				"name": "Cluster1_NK",
+				"url": "bam/BMMC_donor1_cluster1.bam",
+				"indexURL": "bam/BMMC_donor1_cluster1.bam.bai",
+				"format": "bam",
+				"type": "alignment",
+				
+				"color": "#A80000", //set colors: red
+
+				showAlignments: false,
+
+				height:50, //total height: default 300
+				coverageTrackHeight:50, //coverage height: default 50
+				alignmentRowHeight:0, //height of reads, default 14 per reads;
+			},
+			
+			{
+				"name": "Cluster3_B",
+				"url": "bam/BMMC_donor1_cluster3.bam",
+				"indexURL": "bam/BMMC_donor1_cluster3.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "#0165B7", //set colors: blue
+				showAlignments: false,
+				height:50,
+				coverageTrackHeight:50,
+				//visibilityWindow: -1,
+				alignmentRowHeight:0, 
+			},
+			
+			{
+				"name": "Cluster6_mono",
+				"url": "bam/BMMC_donor1_cluster6.bam",
+				"indexURL": "bam/BMMC_donor1_cluster6.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "#00AF51", //set colors: green
+				showAlignments: false,
+				height:50,
+				coverageTrackHeight:50,
+				alignmentRowHeight:0, 
+			},
+
+// bw
+
+			{
+				type: "wig",
+				name: "v6-bin1", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.bin1.bigWig",
+				height:50,
+				color: "black",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+
+
+			{
+				type: "wig",
+				name: "v6-forward", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.v6f.bigWig",
+				height:50,
+				color: "orange",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v6-reverse", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.v6r.bigWig",
+				height:50,
+				color: "#FF7F27",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+		]
+	};
+
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>

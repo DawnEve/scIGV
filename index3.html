@@ -1,0 +1,175 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test3: show tracks using BigWig file as input, all tracks;
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div");
+
+    var options =
+	{
+		genome: "hg19",
+		locus: "chr8:144,661,785-144,662,802",
+		
+		tracks: [
+			{
+				"name": "Cluster1_NK",
+				"url": "bam/BMMC_donor1_cluster1.bam",
+				"indexURL": "bam/BMMC_donor1_cluster1.bam.bai",
+				"format": "bam",
+				"type": "alignment",
+				
+				"color": "red", //set colors
+
+				showAlignments: false,
+
+				height:50, //total height: default 300
+				coverageTrackHeight:50, //coverage height: default 50
+				alignmentRowHeight:0, //height of reads, default 14 per reads;
+			},
+			
+			{
+				"name": "Cluster3_B",
+				"url": "bam/BMMC_donor1_cluster3.bam",
+				"indexURL": "bam/BMMC_donor1_cluster3.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "blue", //set colors
+				showAlignments: false,
+				height:50,
+				coverageTrackHeight:50,
+				//visibilityWindow: -1,
+				alignmentRowHeight:0, 
+			},
+			
+			{
+				"name": "Cluster6_mono",
+				"url": "bam/BMMC_donor1_cluster6.bam",
+				"indexURL": "bam/BMMC_donor1_cluster6.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "purple", //set colors
+				showAlignments: false,
+				height:50,
+				coverageTrackHeight:50,
+				alignmentRowHeight:0, 
+			},
+
+// bw
+			{
+				type: "wig",
+				name: "v1-bin50-noDuplicate-scale0.5",
+				url: "bam/bw/BMMC_donor1_cluster6.bigWig",
+				height:50,
+				color: "#FFAEC9",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v2-bin50-scale0.5",
+				url: "bam/bw/BMMC_donor1_cluster6.v2.bigWig",
+				height:50,
+				color: "#FFC90E",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v3-bin50-scale1",
+				url: "bam/bw/BMMC_donor1_cluster6.v3.bigWig",
+				height:50,
+				color: "#B5E61D",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v4-bin10",
+				url: "bam/bw/BMMC_donor1_cluster6.v4.bigWig",
+				height:50,
+				color: "#99D9EA",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v4_1-bin1",
+				url: "bam/bw/BMMC_donor1_cluster6.v4_1.bigWig",
+				height:50,
+				color: "#22B14C",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v6-forward", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.v6f.bigWig",
+				height:50,
+				color: "orange",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v6-reverse", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.v6r.bigWig",
+				height:50,
+				color: "#FF7F27",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+		]
+	};
+
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>

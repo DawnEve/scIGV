@@ -19,10 +19,16 @@ $ git push -u origin master
 v0.0.1@south index1.html basic example, by the author
 v0.0.2@south index1_2.html use local ref and local bam files.
 v0.0.3@south index2.html coverageTrackHeight, hide alignment
+v0.0.4@south index3.html how to use BigWig to show peaks; bw peak not like bam peak, why?
+	PR: https://github.com/deeptools/deepTools/issues/1139
 # ==> commit
 # =========> push to origin master
 
 
 
 ref:
-https://github.com/paul-shannon/igvR
+[1] https://github.com/paul-shannon/igvR
+[2] https://www.jianshu.com/p/2aff024c7819
+	https://github.com/xuzhougeng/myscripts/blob/master/igv_web.py
+[3] examples: https://igv.org/web/release/2.12.6/examples/
+[4] 

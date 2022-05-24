@@ -1,0 +1,87 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test3_3: BigWig not like bam peaks, why? For PR: https://github.com/deeptools/deepTools/issues/1139
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div");
+
+    var options =
+	{
+		genome: "hg19",
+		//locus: "chr8:144,661,785-144,662,802",
+		locus: "chr19:49,468,234-49,471,806",
+		
+		tracks: [			
+			{
+				"name": "raw_bam",
+				"url": "bam/BMMC_donor1_cluster6.bam",
+				"indexURL": "bam/BMMC_donor1_cluster6.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "#00AF51", //set colors: green
+				showAlignments: false,
+				height:50,
+				coverageTrackHeight:50,
+				alignmentRowHeight:0, 
+			},
+
+// bw
+			{
+				type: "wig",
+				name: "BigWig_v6-bin1", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.bin1.bigWig",
+				height:50,
+				color: "black",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+			
+			
+			{
+				type: "wig",
+				name: "v6-forward", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.v6f.bigWig",
+				height:50,
+				color: "orange",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "v6-reverse", //binSize 1, default:50
+				url: "bam/bw/BMMC_donor1_cluster6.v6r.bigWig",
+				height:50,
+				color: "#FF7F27",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+		]
+	};
+
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>
