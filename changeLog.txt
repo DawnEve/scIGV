@@ -25,6 +25,7 @@ v0.0.5@south index4.html try data center by Flask;
 v0.0.5-2@south change refer height; use Data Center;
 	要使用完整的 reference 对象，在里面的 tracks.height 设置高度
 	https://github.com/BioMooc/DaisyHttp
+v0.0.5-3@south update desc;
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
