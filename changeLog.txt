@@ -21,8 +21,23 @@ v0.0.2@south index1_2.html use local ref and local bam files.
 v0.0.3@south index2.html coverageTrackHeight, hide alignment
 v0.0.4@south index3.html how to use BigWig to show peaks; bw peak not like bam peak, why?
 	PR: https://github.com/deeptools/deepTools/issues/1139
+v0.0.5@south index4.html try data center by Flask;
+v0.0.5-2@south change refer height; use Data Center;
+	要使用完整的 reference 对象，在里面的 tracks.height 设置高度
+	https://github.com/BioMooc/DaisyHttp
 # ==> commit
-# =========> push to origin master
+# =========> push to origin master: https://github.com/DawnEve/scIGV
+
+
+
+
+
+
+
+
+
+
+
 
 
 

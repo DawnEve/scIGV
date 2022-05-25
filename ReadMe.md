@@ -4,7 +4,9 @@ As the document of igv.js is Not Good, the first thing is to try some key parame
 
 
 > igv.js: https://github.com/igvteam/igv.js
+
 > examples: https://igv.org/web/release/2.12.6/examples/
+
 > wiki: https://github.com/igvteam/igv.js/wiki
 
 
@@ -40,40 +42,6 @@ tracks: [
 ### Data server must support `range` header
 refer this [issue](https://github.com/igvteam/igv.js/issues/1508)
 ```
-$ python3 -m RangeHTTPServer 8890  #not support range header;
-
-Try this one: https://github.com/danvk/RangeHTTPServer
-$ pip3 install rangehttpserver  ##Successfully installed rangehttpserver-1.2.0
-$ pip3 list | grep -i range
-rangehttpserver                   1.2.0
-这个版本不支持 自定义端口号
-安装最新版:
-$ pip3 install --user https://github.com/danvk/RangeHTTPServer/archive/master.zip --upgrade
-还是不行，按照 github 修改文件为最新版即可。
-$ vim /home/wangjl/anaconda3/lib/python3.7/site-packages/RangeHTTPServer/__main__.py
-#!/usr/bin/python
-
-try:
-    # Python3
-    import http.server as SimpleHTTPServer
-
-except ImportError:
-    # Python 2
-    import SimpleHTTPServer
-
-from . import RangeRequestHandler
-
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('port', action='store',
-                    default=8000, type=int,
-                    nargs='?', help='Specify alternate port [default: 8000]')
-
-args = parser.parse_args()
-SimpleHTTPServer.test(HandlerClass=RangeRequestHandler, port=args.port)
-
-
-启动服务
 $ python3 -m RangeHTTPServer 8890
 Serving HTTP on 0.0.0.0 port 8890 (http://0.0.0.0:8890/) ...
 ```

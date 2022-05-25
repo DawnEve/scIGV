@@ -1,0 +1,81 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test4: using data center by Flask(https://github.com/BioMooc/DaisyHttp); Set reference height;
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div");
+
+    var options =
+	{
+		//genome: "hg38",
+		"locus": "chr1:246,766,637-246,768,733", //重点显示的位置
+		
+		reference:{
+			"id": "hg38",
+			
+			"name": "Human (GRCh38/hg38)",
+			"fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
+			"indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
+			"cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
+			"aliasURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/hg38_alias.tab",
+			"tracks": [
+				{
+					"name": "Refseq Genes",
+					
+					"height":200, // height of reference
+					color:"red",  // color of this track
+					
+					"format": "refgene",
+					"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz",
+					"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz.tbi",
+					"visibilityWindow": -1,
+					"supportsWholeGenome": false,
+					"removable": false,
+					"order": 1000000,
+					"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
+				}
+			],
+			"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+		},
+		
+		tracks: [			
+			{
+				"name": "raw_bam-N5_c1",
+				"url": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c1.bam",
+				"indexURL": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c1.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "#00AF51", //set colors: green
+				showAlignments: false,
+				height:45,
+				coverageTrackHeight:30,
+				alignmentRowHeight:0, 
+			},
+
+			{
+				"name": "raw_bam-N5_c5",
+				"url": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c5.bam",
+				"indexURL": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c5.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "blue",
+				showAlignments: false,
+				height:45,
+				coverageTrackHeight:30,
+				alignmentRowHeight:0, 
+			},
+
+		]
+	};
+
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>
