@@ -46,6 +46,8 @@ $ python3 -m RangeHTTPServer 8890
 Serving HTTP on 0.0.0.0 port 8890 (http://0.0.0.0:8890/) ...
 ```
 
+Or we can use [DaisyHttp](https://github.com/BioMooc/DaisyHttp) as server.
+
 
 
 ### reference genome
@@ -118,14 +120,14 @@ $ samtools view -@ 100 -D CB:../cluster/BMMC_cluster6.cid.txt -o BMMC_donor1_clu
 $ samtools index -@ 20 BMMC_donor1_cluster6.bam
 
 # trans from server to Y station
-$ scp bams/BMMC_donor1_cluster6.bam* wangjl@y.biomooc.com:/home/wangjl/test/IGVjs_test/bam/
+$ scp bams/BMMC_donor1_cluster6.bam* wangjl@y.biomooc.com:/data/wangjl/project/scIGV/bam/
 ```
 
 
 ## On Y station
 ```
 ## down sample
-$ cd /home/wangjl/test/IGVjs_test/bam/
+$ cd /data/wangjl/project/scIGV/bam/
 $ mkdir down
 $ samtools view -s 0.05 -b -@ 50 BMMC_donor1_cluster3.bam > down/BMMC_donor1_cluster3.down0.05.bam
 $ samtools view -s 0.05 -b -@ 50 BMMC_donor1_cluster1.bam > down/BMMC_donor1_cluster1.down0.05.bam
@@ -137,8 +139,9 @@ $ samtools index down/BMMC_donor1_cluster6.down0.05.bam
 
 
 ## start server service
-$ cd /home/wangjl/test/IGVjs_test/
-$ python3 -m http.server 8890
+$ cd /data/wangjl/project/scIGV
+## python3 -m http.server 8890
+$ python3 -m RangeHTTPServer 8890
 ```
 
 

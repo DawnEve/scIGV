@@ -11,6 +11,8 @@ test4: using data center by Flask(https://github.com/BioMooc/DaisyHttp); Set ref
 <script>
 	var igvDiv = document.getElementById("igv-div");
 
+var i=2; //放大倍数， height 的系数
+
     var options =
 	{
 		//genome: "hg38",
@@ -57,8 +59,8 @@ test4: using data center by Flask(https://github.com/BioMooc/DaisyHttp); Set ref
 				"type": "alignment", //"annotation",
 				"color": "#00AF51", //set colors: green
 				showAlignments: false,
-				height:45,
-				coverageTrackHeight:30,
+				height:45*i,
+				coverageTrackHeight:30*i,
 				alignmentRowHeight:0, 
 			},
 
@@ -70,8 +72,8 @@ test4: using data center by Flask(https://github.com/BioMooc/DaisyHttp); Set ref
 				"type": "alignment", //"annotation",
 				"color": "blue",
 				showAlignments: false,
-				height:45,
-				coverageTrackHeight:30,
+				height:45*i,
+				coverageTrackHeight:30*i,
 				alignmentRowHeight:0, 
 			},
 

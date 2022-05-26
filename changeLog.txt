@@ -1,5 +1,16 @@
 github: https://github.com/DawnEve/scIGV
-On Y station: /home/wangjl/test/IGVjs_test
+On Y station: /home/wangjl/data/project/scIGV/
+
+################### No space left on device
+old: /home/wangjl/test/IGVjs_test/
+new: /home/wangjl/data/project/scIGV/
+
+$ cd /home/wangjl/data/project
+$ mv /home/wangjl/test/IGVjs_test .
+$ mv IGVjs_test scIGV
+$ mv /home/wangjl/test/igv.js/ .
+###################
+
 
 $ cd /home/wangjl/test/IGVjs_test
 $ git init
@@ -26,6 +37,7 @@ v0.0.5-2@south change refer height; use Data Center;
 	要使用完整的 reference 对象，在里面的 tracks.height 设置高度
 	https://github.com/BioMooc/DaisyHttp
 v0.0.5-3@south update desc;
+v0.0.5-4@south change path on Y station;
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
