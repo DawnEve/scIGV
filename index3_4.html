@@ -1,0 +1,164 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test3_4: BigWig not like bam peaks, why? Test with a small sample. PR continued: https://github.com/deeptools/deepTools/issues/1139
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div");
+
+    var options =
+	{
+		genome: "hg19",
+		//locus: "chr8:144,661,785-144,662,802",
+		locus: "chr19:49469332-49470390", //
+
+// bam
+		tracks: [
+			{
+				"name": "raw_bam sample 0.05",
+				"url": "bam/test/cluster1.region.0.05.bam",
+				"indexURL": "bam/test/cluster1.region.0.05.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "blue",
+				height:200,
+				/*showAlignments: false,
+				coverageTrackHeight:50,
+				alignmentRowHeight:0, */
+			},
+
+			{
+				"name": "raw_bam sample 0.01",
+				"url": "bam/test/cluster1.region.0.01.bam",
+				"indexURL": "bam/test/cluster1.region.0.01.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "red",
+				height:200,
+				/*showAlignments: false,
+				coverageTrackHeight:50,
+				alignmentRowHeight:0, */
+			},
+// bw One step Method
+			{
+				type: "wig",
+				name: "BigWig sample 0.05(1 step)", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.05.bw",
+				height:50,
+				color: "blue",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "BigWig-sample 0.01(1 step)", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.01.bw",
+				height:50,
+				color: "red",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+// bw Two steps method
+/*			{
+				type: "wig",
+				name: "BigWig sample 0.05(2 steps)", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.05t2.bw",
+				height:50,
+				color: "blue",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+
+			{
+				type: "wig",
+				name: "BigWig-sample 0.01(2 steps)", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.01t2.bw",
+				height:50,
+				color: "red",
+				min: "0",
+				//max: "30",
+				//color: "rgb(0, 0, 150)",
+				guideLines: [
+					{color: 'green', dotted: true, y: 2500}, 
+					{color: 'red', dotted: false, y: 5}
+				]
+			},
+*/
+// igvtools, count, tdf is a wig file?!
+
+			{
+				type: "wig",
+				name: "igvtools, tdf sample 0.05", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.05.count.tdf",
+				height:50,
+				color: "blue",
+				min: "0",
+				//max: "30",
+			},
+
+			{
+				type: "wig",
+				name: "igvtools, tdf sample 0.01", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.01.count.tdf",
+				height:50,
+				color: "red",
+				min: "0",
+				//max: "30",
+			},
+
+
+
+
+			{
+				type: "wig",
+				name: "igvtools, sample 0.05, wig", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.05.count.wig",
+				height:50,
+				color: "cyan",
+				min: "0",
+				//max: "30",
+			},
+			
+			{
+				type: "wig",
+				name: "igvtools, sample 0.05 wig, to bw", //binSize 1, default:50
+				url: "bam/test/cluster1.region.0.05.count.bw",
+				height:50,
+				color: "orange",
+				min: "0",
+				//max: "30",
+			},
+			
+
+		]
+	};
+
+
+// run IGV 
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>

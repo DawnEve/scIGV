@@ -39,6 +39,8 @@ v0.0.5-2@south change refer height; use Data Center;
 v0.0.5-3@south update desc;
 v0.0.5-4@south change path on Y station;
 v0.0.5-5@south index5.html add multiple bam 0-9;
+v0.0.5-6@south index3_4.html, Why why peaks differ between bam and bigwig files?
+	一步法 bam 2 bw; 两步法; igvtools; 
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
