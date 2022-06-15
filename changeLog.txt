@@ -41,6 +41,10 @@ v0.0.5-4@south change path on Y station;
 v0.0.5-5@south index5.html add multiple bam 0-9;
 v0.0.5-6@south index3_4.html, Why why peaks differ between bam and bigwig files?
 	一步法 bam 2 bw; 两步法; igvtools; 
+v0.0.5-6@south index5_4.html add bed tracks
+	5_2 MDA-MB-468 cells;
+	5_3 {GSE64016: "247 H1 hESC, FACS sorted cells"} vs {GSE94479: "3 MCF7 sync cells"};
+	5_4 {GSE94479: "3 MCF7 sync cells"} add bed files
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 

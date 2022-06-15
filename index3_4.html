@@ -20,34 +20,22 @@ test3_4: BigWig not like bam peaks, why? Test with a small sample. PR continued:
 // bam
 		tracks: [
 			{
-				"name": "raw_bam sample 0.05",
+				"name": "raw_bam",
 				"url": "bam/test/cluster1.region.0.05.bam",
 				"indexURL": "bam/test/cluster1.region.0.05.bam.bai",
 				"format": "bam",
 				"type": "alignment", //"annotation",
 				"color": "blue",
-				height:200,
+				height:100,
 				/*showAlignments: false,
 				coverageTrackHeight:50,
 				alignmentRowHeight:0, */
 			},
 
-			{
-				"name": "raw_bam sample 0.01",
-				"url": "bam/test/cluster1.region.0.01.bam",
-				"indexURL": "bam/test/cluster1.region.0.01.bam.bai",
-				"format": "bam",
-				"type": "alignment", //"annotation",
-				"color": "red",
-				height:200,
-				/*showAlignments: false,
-				coverageTrackHeight:50,
-				alignmentRowHeight:0, */
-			},
 // bw One step Method
 			{
 				type: "wig",
-				name: "BigWig sample 0.05(1 step)", //binSize 1, default:50
+				name: "BigWig (1 step)", //binSize 1, default:50
 				url: "bam/test/cluster1.region.0.05.bw",
 				height:50,
 				color: "blue",
@@ -60,25 +48,10 @@ test3_4: BigWig not like bam peaks, why? Test with a small sample. PR continued:
 				]
 			},
 
-			{
-				type: "wig",
-				name: "BigWig-sample 0.01(1 step)", //binSize 1, default:50
-				url: "bam/test/cluster1.region.0.01.bw",
-				height:50,
-				color: "red",
-				min: "0",
-				//max: "30",
-				//color: "rgb(0, 0, 150)",
-				guideLines: [
-					{color: 'green', dotted: true, y: 2500}, 
-					{color: 'red', dotted: false, y: 5}
-				]
-			},
-
 // bw Two steps method
 /*			{
 				type: "wig",
-				name: "BigWig sample 0.05(2 steps)", //binSize 1, default:50
+				name: "BigWig (2 steps)", 
 				url: "bam/test/cluster1.region.0.05t2.bw",
 				height:50,
 				color: "blue",
@@ -91,26 +64,12 @@ test3_4: BigWig not like bam peaks, why? Test with a small sample. PR continued:
 				]
 			},
 
-			{
-				type: "wig",
-				name: "BigWig-sample 0.01(2 steps)", //binSize 1, default:50
-				url: "bam/test/cluster1.region.0.01t2.bw",
-				height:50,
-				color: "red",
-				min: "0",
-				//max: "30",
-				//color: "rgb(0, 0, 150)",
-				guideLines: [
-					{color: 'green', dotted: true, y: 2500}, 
-					{color: 'red', dotted: false, y: 5}
-				]
-			},
 */
 // igvtools, count, tdf is a wig file?!
 
 			{
 				type: "wig",
-				name: "igvtools, tdf sample 0.05", //binSize 1, default:50
+				name: "igvtools, tdf", 
 				url: "bam/test/cluster1.region.0.05.count.tdf",
 				height:50,
 				color: "blue",
@@ -118,22 +77,10 @@ test3_4: BigWig not like bam peaks, why? Test with a small sample. PR continued:
 				//max: "30",
 			},
 
-			{
-				type: "wig",
-				name: "igvtools, tdf sample 0.01", //binSize 1, default:50
-				url: "bam/test/cluster1.region.0.01.count.tdf",
-				height:50,
-				color: "red",
-				min: "0",
-				//max: "30",
-			},
-
-
-
 
 			{
 				type: "wig",
-				name: "igvtools, sample 0.05, wig", //binSize 1, default:50
+				name: "igvtools, wig", 
 				url: "bam/test/cluster1.region.0.05.count.wig",
 				height:50,
 				color: "cyan",
@@ -143,13 +90,90 @@ test3_4: BigWig not like bam peaks, why? Test with a small sample. PR continued:
 			
 			{
 				type: "wig",
-				name: "igvtools, sample 0.05 wig, to bw", //binSize 1, default:50
+				name: "igvtools, wig to bw", 
 				url: "bam/test/cluster1.region.0.05.count.bw",
 				height:50,
 				color: "orange",
 				min: "0",
 				//max: "30",
 			},
+// macs2 bdg, to bw, read length=98bp; single end;
+			{
+				type: "wig",
+				name: "bedGraph,T, Macs2 --extsize 1",
+				//url: "http://x.biomooc.com:8787/list/macs2/c1__treat_pileup.bw",
+				//url: "http://x.biomooc.com:8787/list/macs2/c1_region_treat_pileup.bw",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region_treat_pileup.bedGraph",
+				height:50,
+				color: "red",
+				min: "0",
+				//max: "30",
+			},
+
+			{
+				type: "wig",
+				name: "bedGraph,C, Macs2 --extsize 1",
+				//url: "http://x.biomooc.com:8787/list/macs2/c1__treat_pileup.bw",
+				//url: "http://x.biomooc.com:8787/list/macs2/c1_region_treat_pileup.bw",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region_control_lambda.bedGraph",
+				height:50,
+				color: "grey",
+				min: "0",
+				// max: "30",
+			},
+			
+			{
+				type: "wig",
+				name: "bw, Macs2 --extsize 1",
+				//url: "http://x.biomooc.com:8787/list/macs2/c1__treat_pileup.bw",
+				//url: "http://x.biomooc.com:8787/list/macs2/c1_region_treat_pileup.bw",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region.noext_treat_pileup.bw",
+				height:50,
+				color: "purple",
+				min: "0",
+				//max: "30",
+			},
+			
+			{
+				type: "wig",
+				name: "Macs2 --extsize 10",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region.ext10_treat_pileup.bw",
+				height:50,
+				color: "green",
+				min: "0",
+				//max: "30",
+			},
+			
+			{
+				type: "wig",
+				name: "Macs2 --extsize 50",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region.ext50_treat_pileup.bw",
+				height:50,
+				color: "green",
+				min: "0",
+				//max: "30",
+			},
+
+			{
+				type: "wig",
+				name: "Macs2 --extsize 100",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region.ext100_treat_pileup.bw",
+				height:50,
+				color: "green",
+				min: "0",
+				//max: "30",
+			},
+
+			{
+				type: "wig",
+				name: "Macs2 --extsize 100 --shift -50",
+				url: "http://x.biomooc.com:8787/list/macs2/c1_region.ext100s50_treat_pileup.bw",
+				height:50,
+				color: "#dddddd",
+				min: "0",
+				//max: "30",
+			},
+			
 			
 
 		]

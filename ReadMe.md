@@ -15,9 +15,28 @@ As the document of igv.js is Not Good, the first thing is to try some key parame
 ```
 ## version
 $ wget https://igv.org/web/release/2.12.2/dist/igv.min.js
+
+
+// settings (very important)
+var options =
+    {
+		genome: "hg19",
+		locus: "chr1:246,928,887-246,933,873", //SCCPDH
+		tracks: []
+	};
+
+// run IGV 
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
 ```
 
-### some key settings in tracks
+
+
+
+### 1. some key settings in tracks
 ```
 tracks: [
 	{
@@ -39,14 +58,14 @@ tracks: [
 ```
 
 
-### Data server must support `range` header
+### 2. Data server must support `range` header
 refer this [issue](https://github.com/igvteam/igv.js/issues/1508)
 ```
 $ python3 -m RangeHTTPServer 8890
 Serving HTTP on 0.0.0.0 port 8890 (http://0.0.0.0:8890/) ...
 ```
 
-Or we can use [DaisyHttp](https://github.com/BioMooc/DaisyHttp) as server.
+Or we can use [DaisyHttp](https://github.com/BioMooc/DaisyHttp) as data server.
 
 
 
@@ -83,6 +102,29 @@ reference:{
 	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
 },
 ```
+
+
+
+
+### 3. add bed track
+
+```
+// add bed file
+var oBed={
+		"name": "polyA site",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://x.biomooc.com:8891/list/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+		"color": "red",
+		height:50, //total height: default 300
+
+	}
+	options.tracks.push(oBed);
+```
+
+
+
+
 
 
 

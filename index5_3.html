@@ -1,0 +1,154 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test5_3: multiple bams, For {GSE64016: "247 H1 hESC, FACS sorted cells"} vs {GSE94479: "3 MCF7 sync cells"}, add using js;
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// tools
+var dev=function(x, y){ 
+	rs=(x - x%y)/y; 
+	return(rs); 
+}
+
+
+
+//1. settings
+    var options =
+	{
+		genome: "hg19",
+		//locus: "chr8:144,661,785-144,662,802",
+		//locus: "chr19:49,469,658-49,470,905",
+		//locus: "chr17:26,654,969-26,656,844", //IFT20
+		locus: "chr1:246,928,887-246,933,873", //SCCPDH
+		//locus: "chr17:38,277,223-38,294,170", //MSL1
+		
+		tracks: []
+	};
+
+
+var colors=[ //"#A80000", 
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+
+
+
+
+// add PolyA-seq tracks
+// SCCPDH
+var result=  {"G1":["SRR1700150","SRR1700152","SRR1700127","SRR1700114","SRR1700119","SRR1700175","SRR1700106","SRR1700164","SRR1700102","SRR1700132"],"G2/M":["SRR1700324","SRR1700291","SRR1700282","SRR1700266","SRR1700327","SRR1700265","SRR1700283","SRR1700279","SRR1700320","SRR1700274"],"S":["SRR1700190","SRR1700195","SRR1700204","SRR1700233","SRR1700225","SRR1700192","SRR1700196","SRR1700178","SRR1700208","SRR1700224"]}
+
+// MSL1
+var result=  {"G1":["SRR1700195","SRR1700175","SRR1700324","SRR1700196","SRR1700132"],"G2M":["SRR1700152","SRR1700114","SRR1700119","SRR1700106","SRR1700102"],"S":["SRR1700150","SRR1700127","SRR1700204","SRR1700233","SRR1700225"]}
+
+
+
+//var cids=['c15ROW20','c16ROW39','c01ROW31','c14ROW09','c13ROW07','c12ROW25','c15ROW32','c14ROW15','c12ROW34','c15ROW26','c19ROW09']//,'c16ROW24','c15ROW27','c12ROW03','c14ROW28','c9ROW14','c12ROW40','c16ROW40','c14ROW24','c16ROW35','c16ROW07','c12ROW17','c14ROW22','c14ROW18','c12ROW11','c19ROW39','c19ROW17','c12ROW05','c19ROW34','c15ROW23','c13ROW24','c15ROW30']
+
+var types=[]
+var cids=[];
+var NsamplePerClazz=0
+for(var i in result){
+	//console.log(i, result[i]);
+	cids=cids.concat(result[i]);
+	NsamplePerClazz=result[i].length;
+	for(var j=0; j<result[i].length; j++){
+		types.push(i);
+	}
+}
+
+for(var i=0; i<cids.length; i++){
+	console.log("adding track",i);
+	
+	var cid=cids[i];
+	
+	
+	//var path="hg19/CutA_c9_ROW04_Aligned.sortedByCoord.out.bam"
+	//var bam_path="http://x.biomooc.com:8891/list/190705PAS/hg19/CutA_"+cid_+"_Aligned.sortedByCoord.out.bam";
+	var bam_path="http://x.biomooc.com:8891/list/FACS_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
+	var index_path=bam_path+".bai"
+	
+	
+	var oTrack={
+		"name": types[i]+"_"+cid,
+		"url": bam_path,
+		"indexURL": index_path,
+		"format": "bam",
+		"type": "alignment",
+
+		"color": colors[dev(i, NsamplePerClazz)], //set colors: red
+
+		showAlignments: false,
+
+		height:50, //total height: default 300
+		coverageTrackHeight:40, //coverage height: default 50
+		alignmentRowHeight:0, //height of reads, default 14 per reads;
+	}
+	options.tracks.push(oTrack);
+}
+
+
+
+// add syc cells 
+/*
+https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE94479
+GSM2476255	MCF7 RNA-seq G0/G1
+GSM2476256	MCF7 RNA-seq S phase
+GSM2476257	MCF7 RNA-seq M phase
+
+SRR GSM phase
+SRR5227986 GSM2476255 G0/G1
+SRR5227987 GSM2476256 S
+SRR5227988 GSM2476257 M
+*/
+var cell_info2=[
+	["SRR5227986", "GSM2476255", "G0/G1"],
+	["SRR5227987", "GSM2476256", "S"],
+	["SRR5227988", "GSM2476257", "M"]
+]
+
+for(var i=0; i<cell_info2.length; i++){
+	console.log("adding track",cell_info2[i]);
+	
+	var cid=cell_info2[i][0];
+	//var path="sync_dataset/map/SRR5227988_Aligned.sortedByCoord.out.bam"
+	var bam_path="http://x.biomooc.com:8891/list/sync_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
+	var index_path=bam_path+".bai"
+	
+	
+	var oTrack={
+		"name": cell_info2[i][1]+"_"+cell_info2[i][2],
+		"url": bam_path,
+		"indexURL": index_path,
+		"format": "bam",
+		"type": "alignment",
+
+		"color": colors[i], //set colors: red
+
+		showAlignments: false,
+
+		height:50, //total height: default 300
+		coverageTrackHeight:40, //coverage height: default 50
+		alignmentRowHeight:0, //height of reads, default 14 per reads;
+	}
+	options.tracks.push(oTrack);
+}
+
+
+
+
+
+
+//2. run IGV 
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>
