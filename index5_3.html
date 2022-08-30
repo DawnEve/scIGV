@@ -2,7 +2,7 @@
 <span>
 help: https://github.com/igvteam/igv.js/wiki 
 | 
-test5_3: multiple bams, For {GSE64016: "247 H1 hESC, FACS sorted cells"} vs {GSE94479: "3 MCF7 sync cells"}, add using js;
+test5_3: multiple bams, For {GSE64016: "247 H1 hESC, FACS sorted cells"} vs {GSE94479: "3 MCF7 sync cells"}, add using js; add bed files;
 </span>
 
 <script src="js/igv.min.js"></script>
@@ -142,7 +142,17 @@ for(var i=0; i<cell_info2.length; i++){
 
 
 
+// add bed file
+var oBed={
+		"name": "polyA site",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://x.biomooc.com:8891/list/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+		"color": "red",
+		height:50, //total height: default 300
 
+	}
+	options.tracks.push(oBed);
 
 
 //2. run IGV 

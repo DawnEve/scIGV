@@ -2,7 +2,7 @@
 <span>
 help: https://github.com/igvteam/igv.js/wiki 
 | 
-test5_4: multiple bams, For {GSE94479: "3 MCF7 sync cells"}, add using js;
+test5_4: multiple bams, For {GSE94479: "3 MCF7 sync cells"}, add using js; {colorBy: "strand"}; add bed files;
 </span>
 
 <script src="js/igv.min.js"></script>
@@ -23,9 +23,10 @@ var dev=function(x, y){
 		genome: "hg19",
 		//locus: "chr8:144,661,785-144,662,802",
 		//locus: "chr19:49,469,658-49,470,905",
-		//locus: "chr17:26,654,969-26,656,844", //IFT20
+		//locus: "chr17:26,654,799-26,655,888", //IFT20
 		locus: "chr1:246,928,887-246,933,873", //SCCPDH
 		//locus: "chr17:38,277,223-38,294,170", //MSL1
+		
 		
 		tracks: []
 	};
@@ -65,7 +66,8 @@ for(var i=0; i<cell_info2.length; i++){
 	
 	var cid=cell_info2[i][0];
 	//var path="sync_dataset/map/SRR5227988_Aligned.sortedByCoord.out.bam"
-	var bam_path="http://x.biomooc.com:8891/list/sync_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
+	//var bam_path="http://x.biomooc.com:8891/list/sync_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
+	var bam_path="http://j.biomooc.com:8001/list/sync_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
 	var index_path=bam_path+".bai"
 	
 	
@@ -77,10 +79,11 @@ for(var i=0; i<cell_info2.length; i++){
 		"type": "alignment",
 
 		"color": colors[i], //set colors: red
+		colorBy: "strand", // for alignment read
 
-		showAlignments: true,
+		showAlignments: !true,
 
-		height:150, //total height: default 300
+		height:50, //150, //total height: default 300
 		coverageTrackHeight:40, //coverage height: default 50
 		alignmentRowHeight:5, //height of reads, default 14 per reads;
 	}
@@ -93,7 +96,8 @@ var oBed={
 		"name": "polyA site",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://x.biomooc.com:8891/list/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+		//"url": "http://x.biomooc.com:8891/list/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+		"url": "http://j.biomooc.com:8001/list/APA/pasV5_20222.bed",
 		"color": "red",
 		height:50, //total height: default 300
 

@@ -58,6 +58,8 @@ tracks: [
 ```
 
 
+
+
 ### 2. Data server must support `range` header
 refer this [issue](https://github.com/igvteam/igv.js/issues/1508)
 ```
@@ -106,6 +108,8 @@ reference:{
 
 
 
+
+
 ### 3. add bed track
 
 ```
@@ -124,6 +128,15 @@ var oBed={
 
 
 
+
+
+### 4. Search by annotation symbol or locus string.
+
+```
+browser.search('EGFR');
+or 
+browser.search('chr10:1000-2000')
+```
 
 
 

@@ -1,0 +1,82 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test5_5: multiple bams, mouse ESC(chenxi), add using js; {colorBy: "strand"}; {mm39: Gapdh, Actb, };
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// tools
+var dev=function(x, y){ 
+	rs=(x - x%y)/y; 
+	return(rs); 
+}
+
+
+
+//1. settings
+    var options =
+	{
+		genome: "mm39",
+		//locus: "chr6:125,138,744-125,139,190", //Gapdh
+		locus: "chr11:11,879,295-11,886,451", //Grb10
+		tracks: []
+	};
+
+
+var colors=[ //"#A80000", 
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+
+// add fastq tracks
+var result=  {
+"Hi":["CTGAACGA", "CTCTCTCC", "TTTCACGA", "AGGGTTTC", "GCTTGCAG", "CAGGTAGC", "ACTCAGCA", "TTCTCAAC", "TGAGATCA", "TAATCGGG"],
+"Low":["GCGTACCT", "GGCAGGTG", "GTAGGGTC", "TTCTGCGC", "GTTCAGCC", "CCATCCTG", "TCAGTCAG", "GGGCGTCA", "TACGCGAG", "GCATATGG"]
+}
+
+
+var j=0
+for(var type in result){
+	for(var i=0; i<result[type].length; i++){
+		j+=1;
+		console.log(j, "adding track", type, result[type][i], "color:", dev(j, 11));
+
+		var cid=result[type][i];
+		//var path="sync_dataset/map/SRR5227988_Aligned.sortedByCoord.out.bam"
+		var bam_path="http://x.biomooc.com:8892/list/chenxi/batch0/S3/05_split_bam/S3_"+cid+".bam";
+		var index_path=bam_path+".bai"
+
+		var oTrack={
+			"name": type+"_["+i+"]_"+result[type][i],
+			"url": bam_path,
+			"indexURL": index_path,
+			"format": "bam",
+			"type": "alignment",
+
+			"color": colors[ dev(j, 11)], //set colors: red
+
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:50, //150, //total height: default 300
+			coverageTrackHeight:40, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+		options.tracks.push(oTrack);
+	}
+}
+
+
+
+//2. run IGV 
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>

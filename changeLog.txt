@@ -1,6 +1,20 @@
 github: https://github.com/DawnEve/scIGV
 On Y station: /home/wangjl/data/project/scIGV/
 
+###################
+How to init this project?
+On 193: which bam files locate.
+$ cd /home/wangjl/software
+$ python3 DaisyHttp.py --help
+$ python3 DaisyHttp.py 8892 /home/wangjl/data/
+
+
+On Y station: Goto this index file.
+$ cd /data/wangjl/project/scIGV
+$ python3 -m RangeHTTPServer 8890 
+
+
+
 ################### No space left on device
 old: /home/wangjl/test/IGVjs_test/
 new: /home/wangjl/data/project/scIGV/
@@ -23,7 +37,6 @@ $ git remote -v
 # some git add and git commit
 $ git push -u origin master
 
-
 ###################
 # coding while learning igv.js
 ###################
@@ -44,11 +57,16 @@ v0.0.5-6@south index3_4.html, Why why peaks differ between bam and bigwig files?
 v0.0.5-6@south index5_4.html add bed tracks
 	5_2 MDA-MB-468 cells;
 	5_3 {GSE64016: "247 H1 hESC, FACS sorted cells"} vs {GSE94479: "3 MCF7 sync cells"};
-	5_4 {GSE94479: "3 MCF7 sync cells"} add bed files
+	5_4 {GSE94479: "3 MCF7 sync cells"} add bed files; {colorBy: "strand"}
+	5_5 mouse ESC, chenxi
+v0.0.5-7@south index5_6.html view scPolyA2 bam files.
+v0.0.5-8@south index5_2-v2.html view MDA-MB-468 cells with Bed files.
+v0.0.5-9@south index5_2-v3.html add bed file; add hg19_local; add R API and ajax; browser.search('EGFR');
+
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
-
+todo: R/ string, df;
 
 
 
