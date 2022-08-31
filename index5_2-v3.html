@@ -12,12 +12,7 @@ add hg19_local;
 <div id="igv-div"></div>
 
 <script>
-// tools
-var dev=function(x, y){ 
-	rs=(x - x%y)/y; 
-	return(rs); 
-}
-
+// ********************* tools *********************
 //get parameters from URL
 function getUrlParam(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
@@ -56,8 +51,16 @@ function ajax(fileName, success){
 
 
 
+var dev=function(x, y){ 
+	rs=(x - x%y)/y; 
+	return(rs); 
+}
 
-//下载到本地
+
+
+// ********************* resources *********************
+
+// refer in local
 var hg19_local={
 	"id": "hg19",
 	"name": "Human (GRCh37/hg19)",
@@ -65,8 +68,6 @@ var hg19_local={
 	"indexURL": "ref/hg19/hg19.fasta.fai",
 	"cytobandURL": "ref/hg19/cytoBand.txt",
 	"aliasURL": "ref/hg19/hg19_alias.tab",
-	
-	
 	
 	"tracks": [
 	  {
@@ -79,7 +80,8 @@ var hg19_local={
 		"supportsWholeGenome": false,
 		"removable": false,
 		"order": 1000000,
-		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
 	  }
 	],
 	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
@@ -89,25 +91,23 @@ var hg19_local={
 var options ={
 	//genome: "hg19",
 	reference: hg19_local,
-	//locus: "chr8:144,661,785-144,662,802",
-	//locus: "chr19:49,469,658-49,470,905",
 	locus: "chr17:26,654,969-26,656,844", //IFT20
 	//locus: "chr1:246,928,887-246,933,873", //SCCPDH
-	
 	tracks: []
 };
 
-
+// set colors
 var colors=[ //"#A80000", 
 	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
 	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
 	"#40E0D0","#5F9EA0"]
 
+var colorObj={
+	'G1S':"#66C2A5", 'S':"#FC8D62", 'G2M':"#8DA0CB", 'M':"#E78AC3", 'MG1':"#A6D854",
+	'HeLa_unsync':"#0000B1", 'HeLa_sync':"#CC6400"
+}
 
-
-
-
-// add PolyA-seq tracks
+// add PolyA-seq bam tracks
 // SCCPDH
 //var result=  {"G1S":["c16ROW20","c12ROW31","c12ROW34","c14ROW09","c13ROW15","c15ROW09","c14ROW30","c16ROW29","c15ROW39","c16ROW28"],"G2M":["c16ROW08","c15ROW07","c19ROW22","c19ROW08","c19ROW07","c14ROW34","c16ROW18","c12ROW07","c14ROW10","c12ROW29"],"M":["c13ROW32","c12ROW05","c12ROW20","c19ROW16","c16ROW09","c19ROW23","c16ROW02","c19ROW25","c16ROW25","c12ROW15"],"MG1":["c13ROW09","c16ROW03","c14ROW24","c19ROW18","c16ROW37","c12ROW03","c12ROW08","c19ROW37","c14ROW29","c15ROW33"],"S":["c12ROW35","c12ROW24","c19ROW38","c12ROW36","c15ROW08","c19ROW10","c19ROW40","c16ROW23","c16ROW07","c19ROW17"]}  
 
@@ -115,36 +115,36 @@ var colors=[ //"#A80000",
 //var result = {"G1S":["c13ROW37","c13ROW15","c15ROW13","c16ROW28","c16ROW20","c14ROW30","c14ROW07","c14ROW17","c12ROW34","c14ROW09"],"G2M":["c19ROW09","c12ROW19","c15ROW21","c19ROW07","c14ROW39","c19ROW15","c12ROW07","c14ROW26","c16ROW08","c13ROW08"],"M":["c14ROW02","c15ROW06","c12ROW20","c12ROW05","c16ROW25","c15ROW19","c14ROW37","c16ROW09","c14ROW12","c19ROW23"],"MG1":["c16ROW12","c19ROW20","c13ROW29","c13ROW26","c15ROW31","c14ROW28","c14ROW29","c12ROW04","c12ROW39","c19ROW37"],"S":["c12ROW02","c16ROW07","c12ROW33","c15ROW20","c15ROW25","c14ROW08","c16ROW32","c19ROW10","c12ROW40","c13ROW03"]}
 
 
-
 // result is a json of cell ids, from a R list by plumber API
 var init = function(result){
-	var len=0;
-	for(var i in result) {
-		console.log(i, result[i].length )
-		len=result[i].length;
-		break;
-	}
-
+	//1. get the cell length of each group
+	var lens={}; 
+	//2. get 2 vector of same length;
 	var types=[]
 	var cids=[];
-	for(var i in result){
+	for(var i in result) {
+		lens[i] = result[i].length
+		
 		cids=cids.concat(result[i]);
 		for(var j=0; j<result[i].length; j++){
 			types.push(i);
 		}
 	}
 
+	//3. add bam tracks
 	for(var i=0; i<cids.length; i++){
 		console.log("adding track",i);
 		
 		var cid=cids[i];
 		var cid_=cid.replace("ROW", "_ROW");
 		
-		
 		//var path="hg19/CutA_c9_ROW04_Aligned.sortedByCoord.out.bam"
-		var bam_path="http://x.biomooc.com:8891/list/190705PAS/hg19/CutA_"+cid_+"_Aligned.sortedByCoord.out.bam";
+		var bam_path="http://x.biomooc.com:8891/file/190705PAS/hg19/CutA_"+cid_+"_Aligned.sortedByCoord.out.bam";
 		var index_path=bam_path+".bai"
-			
+		
+		// calc a color index
+		var col= colorObj[ types[i] ];
+		
 		var oTrack={
 			"name": types[i]+"_"+cid,
 			"url": bam_path,
@@ -152,7 +152,7 @@ var init = function(result){
 			"format": "bam",
 			"type": "alignment",
 
-			"color": colors[dev(i, len)], //set colors: red
+			"color": col, //set colors: red
 
 			showAlignments: false,
 
@@ -162,8 +162,6 @@ var init = function(result){
 		}
 		options.tracks.push(oTrack);
 	}
-
-
 
 
 	// add bulk RNA-seq of syc MCF7 cells
@@ -189,7 +187,7 @@ var init = function(result){
 		
 		var cid=cell_info2[i][0];
 		//var path="sync_dataset/map/SRR5227988_Aligned.sortedByCoord.out.bam"
-		var bam_path="http://x.biomooc.com:8891/list/sync_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
+		var bam_path="http://x.biomooc.com:8891/file/sync_dataset/map/"+cid+"_Aligned.sortedByCoord.out.bam";
 		var index_path=bam_path+".bai"
 		
 		var oTrack={
@@ -210,21 +208,17 @@ var init = function(result){
 		options.tracks.push(oTrack);
 	}
 
-
-
 	// add bed file of pA sites
 	var oBed={
 			"name": "polyA site",
 			"type": "annotation",
 			"format": "bed",
-			"url": "http://x.biomooc.com:8891/list/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+			"url": "http://x.biomooc.com:8891/file/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
 			"color": "red",
 			height:50, //total height: default 300
 
 		}
 	options.tracks.push(oBed);
-
-
 
 	//2. run IGV 
 	var igvDiv = document.getElementById("igv-div");

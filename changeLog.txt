@@ -62,7 +62,7 @@ v0.0.5-6@south index5_4.html add bed tracks
 v0.0.5-7@south index5_6.html view scPolyA2 bam files.
 v0.0.5-8@south index5_2-v2.html view MDA-MB-468 cells with Bed files.
 v0.0.5-9@south index5_2-v3.html add bed file; add hg19_local; add R API and ajax; browser.search('EGFR');
-
+v0.0.6-0@south index5_2-v3.html update & refine the code;
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
