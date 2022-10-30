@@ -1,0 +1,129 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki
+|
+test6: hg38; new scPolyA-seq2; All reads of UMI;
+Set reference height(test4);
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+	var igvDiv = document.getElementById("igv-div");
+
+var i=2; //放大倍数， height 的系数
+
+    var options =
+	{
+		//genome: "hg38",
+
+		//重点显示的位置
+		//"locus": "chr1:246,766,637-246,768,733", 
+		"locus": "chr7:50,585,360-50,601,271",
+		
+		reference:{
+			"id": "hg38",
+			
+			"name": "Human (GRCh38/hg38)",
+			"fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
+			"indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
+			"cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
+			"aliasURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/hg38_alias.tab",
+			"tracks": [
+				{
+					"name": "Refseq Genes",
+					
+					"height":200, // height of reference
+					//color:"red",  // color of this track
+					displayMode: ["COLLAPSED", "SQUISHED", "EXPANDED"][2], //是否折叠显示基因模型
+					
+					"format": "refgene",
+					"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz",
+					"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz.tbi",
+					"visibilityWindow": -1,
+					"supportsWholeGenome": false,
+					"removable": false,
+					"order": 1000000,
+					"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
+				}
+			],
+			"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+		},
+		
+		tracks: []
+		
+		/*
+		tracks: [	
+			{
+				"name": "raw_bam-N5_c1",
+				"url": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c1.bam",
+				"indexURL": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c1.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "#00AF51", //set colors: green
+				showAlignments: false,
+				height:45*i,
+				coverageTrackHeight:30*i,
+				alignmentRowHeight:0, 
+			},
+
+			{
+				"name": "raw_bam-N5_c5",
+				"url": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c5.bam",
+				"indexURL": "http://192.168.2.120:8001/file/data/bams/N5_NH_CB_list_filtered_c5.bam.bai",
+				"format": "bam",
+				"type": "alignment", //"annotation",
+				"color": "blue",
+				showAlignments: false,
+				height:45*i,
+				coverageTrackHeight:30*i,
+				alignmentRowHeight:0, 
+			},
+
+		]
+		*/
+	};
+	
+
+// 添加tracks
+//var cids=["AAACACCA", "AAACGAGA", "AAACTTAG", "AACAGTGT", "AACGATAA", "AACGGGTT", "AAGAAGGA", "AAGATTAC", "AAGCCGCA", "AAGCGACT", "AAGGAGAC", "AAGGCGTG", "AAGTGATG", "AATAGGTC", "AATGTCGT", "AATTCAGC", "AATTCTTG", "AATTGGCT", "ACACCATA", "ACACCCAC"];
+
+var cids=["AGTATCGA","CGGGATAT","TGAATTGT","GGTGTCTA","GACAAAGG","CCCTGTGG","CAGTGAAC","GTTCCTTC","AATTCTTG","CGTCGGGT","GCTAAGCG","TGCAACTT","CTTCCGGA","TTCGTGGT","GTACCAAG","TCGCTAGA","ATGATCTT","CAATACCT","GCGGTCAT","GGCGTATC"]
+
+var MSL1=["AGTATCGA","CACATCGC","AGTAATGT","TAGCTGAC","TTTACTTG","TACTCGCC","GACAACTA","GAAGAGTA","GACATTCC","CTAGGACG","AAGGAGAC","CCCTGTGG","TGCTTTAA","GTAGGGTC","ATCTAATC","ACCTCTGT","GCTTGCAG","TGGAGATG","ATCCAGCT","CCTGTTGT"]
+
+cids=MSL1;
+
+for(var j=0; j<20; j+=1){
+	var cid=cids[j];
+	var bam_path="http://x.biomooc.com:8892/list/chenxi/MDA/H/01_fq_cb/small_bam_rmdup/"+cid+".bam";
+	var index_path=bam_path+".bai"
+		
+	var oTrack={
+		"name": cid,
+		"url": bam_path,
+		"indexURL": index_path,
+		"format": "bam",
+		"type": "alignment",
+
+		"color": "red", //set colors: red
+
+		showAlignments: false,
+
+		height:30, //total height: default 300
+		coverageTrackHeight:25, //coverage height: default 50
+		alignmentRowHeight:0, //height of reads, default 14 per reads;
+	}
+
+	options.tracks.push(oTrack);
+}
+
+
+
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>
+

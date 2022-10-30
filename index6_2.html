@@ -1,0 +1,190 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test6_2: multiple bams, For <b class=red>10x data clusters of T cells(before and after stimulate)</b>, add using js;
+add bed file;
+add hg19_local; 
+<span class=red>browser.search('EGFR');</pre>
+</span>
+
+<style>
+.red{color: red;}
+</style>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* tools *********************
+//get parameters from URL
+function getUrlParam(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+
+//bind event to object
+function addEvent(obj,ev,fn){
+	if(obj.addEventListener){
+		//ff:addEventListener
+		obj.addEventListener(ev,fn,false);
+	}else{
+		//IE:attachEvent
+		obj.attachEvent('on'+ev,fn);
+	}
+}
+
+//ajax get file contents;
+function ajax(fileName, success){
+	var xmlhttp=new XMLHttpRequest(); //1.获取对象
+	//2.绑定回调函数
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var text =xmlhttp.responseText;
+			//替换html标签为实体
+			//text = convertHTML(text);
+			success(text);
+		}
+	}
+	//3.设定访问的url
+	xmlhttp.open("GET", fileName, true);
+	//4.发送请求
+	xmlhttp.send();
+}
+
+
+
+var dev=function(x, y){ 
+	rs=(x - x%y)/y; 
+	return(rs); 
+}
+
+
+
+// ********************* resources *********************
+
+// refer in local
+var hg19_local={
+	"id": "hg19",
+	"name": "Human (GRCh37/hg19)",
+	"fastaURL": "ref/hg19/hg19.fasta", //?someRandomSeed=0
+	"indexURL": "ref/hg19/hg19.fasta.fai",
+	"cytobandURL": "ref/hg19/cytoBand.txt",
+	"aliasURL": "ref/hg19/hg19_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg19_genes",
+		"url": "ref/hg19/ncbiRefSeq.sorted.txt.gz",
+		"indexURL": "ref/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+//1. settings
+var options ={
+	//genome: "hg19",
+	reference: hg19_local,
+	locus: "chr17:26,654,969-26,656,844", //IFT20
+	//locus: "chr1:246,928,887-246,933,873", //SCCPDH
+	tracks: []
+};
+
+// set colors
+var colors=[ //"#A80000", 
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+var colorObj={
+	'G1S':"#66C2A5", 'S':"#FC8D62", 'G2M':"#8DA0CB", 'M':"#E78AC3", 'MG1':"#A6D854",
+	'HeLa_unsync':"#0000B1", 'HeLa_sync':"#CC6400"
+}
+
+// add 10x bam tracks
+// SCCPDH
+//var result=  {"G1S":["c16ROW20","c12ROW31","c12ROW34","c14ROW09","c13ROW15","c15ROW09","c14ROW30","c16ROW29","c15ROW39","c16ROW28"],"G2M":["c16ROW08","c15ROW07","c19ROW22","c19ROW08","c19ROW07","c14ROW34","c16ROW18","c12ROW07","c14ROW10","c12ROW29"],"M":["c13ROW32","c12ROW05","c12ROW20","c19ROW16","c16ROW09","c19ROW23","c16ROW02","c19ROW25","c16ROW25","c12ROW15"],"MG1":["c13ROW09","c16ROW03","c14ROW24","c19ROW18","c16ROW37","c12ROW03","c12ROW08","c19ROW37","c14ROW29","c15ROW33"],"S":["c12ROW35","c12ROW24","c19ROW38","c12ROW36","c15ROW08","c19ROW10","c19ROW40","c16ROW23","c16ROW07","c19ROW17"]}  
+
+var init = function(){
+	// add bulk RNA-seq of syc MCF7 cells
+	var cell_info2=[
+		/*["SRR5227986", "GSM2476255", "G0/G1"],
+		["SRR5227987", "GSM2476256", "S"],
+		["SRR5227988", "GSM2476257", "M"]*/
+	]
+
+    var cstatus = ['Resting_1', 'Stimulated_1'];
+    var ctype=["TEM", "TN", "TCM", "TEMRA", "Treg", "Conv_TEFF"];
+
+    for(var j in ctype){
+        for(var i in cstatus){
+            cell_info2.push([cstatus[i], ctype[j]])
+        }
+    }
+
+
+	for(var i=0; i<cell_info2.length; i++){
+		console.log("adding track",cell_info2[i]);
+		
+		var cell=cell_info2[i];
+        var bam_path="http://x.biomooc.com:8892/list/chenxi/T/liuhy/cluster/Gra.3A_1c.cid/bam/"+cell[0]+"."+cell[1]+".bam";
+		var index_path=bam_path+".bai"
+		
+		var oTrack={
+			"name": cell_info2[i][0]+"."+cell_info2[i][1],
+			"url": bam_path,
+			"indexURL": index_path,
+			"format": "bam",
+			"type": "alignment",
+
+			"color": i%2?"red":"blue", // 0 or 1
+
+			showAlignments: false,
+
+			height:30, //total height: default 300
+			coverageTrackHeight:20, //coverage height: default 50
+			alignmentRowHeight:0, //height of reads, default 14 per reads;
+		}
+		options.tracks.push(oTrack);
+	}
+
+	// add bed file of pA sites
+	var oBed={
+			"name": "polyA site",
+			"type": "annotation",
+			"format": "bed",
+			"url": "http://x.biomooc.com:8892/file/apa/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+			"color": "red",
+			height:50, //total height: default 300
+		}
+	options.tracks.push(oBed);
+
+	//2. run IGV 
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			//browser.search( getUrlParam("gene") ); //'EGFR'
+			console.log("Created IGV browser");	
+		})
+}
+
+
+
+addEvent(window,'load',function(){
+   init();
+});
+
+</script>
+
+
+
