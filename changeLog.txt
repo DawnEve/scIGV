@@ -64,6 +64,7 @@ v0.0.5-8@south index5_2-v2.html view MDA-MB-468 cells with Bed files.
 v0.0.5-9@south index5_2-v3.html add bed file; add hg19_local; add R API and ajax; browser.search('EGFR');
 v0.0.6-0@south index5_2-v3.html update with R plumber API & refine the code;
 v0.0.6-1@south index6_2.html: 10x data of T cells before and after stimulation
+v0.0.6-2@south index7.html: AML DNA-seq using hg38-local-ref;
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
