@@ -99,17 +99,16 @@ var colors=[ //"#A80000",
 var init = function(){
 	// add DNA for AML
 	var cell_info2=[
-		["ERR7016191", "xx1", "AML"],
-		["ERR7016196", "xx2", "AML"],
-		["ERR7016189", "xx3", "AML"],
-		["ERR7016182", "xx4", "AML"]
+		["ERR7016182", "xx1", "AML"],
+		["ERR7016189", "xx2", "AML"],
+		["ERR7016191", "xx3", "AML"],
+		["ERR7016196", "xx4", "AML"],
 	]
 
 	for(var i=0; i<cell_info2.length; i++){
-		console.log("adding track",cell_info2[i]);
+		console.log("adding track ",cell_info2[i]);
 		
-		var cell=cell_info2[i];
-        var bam_path="http://j.biomooc.com:8001/file/"+cell[0]+".sorted.bam";
+        var bam_path="http://j.biomooc.com:8001/file/"+cell_info2[i][0]+".sorted.bam";
 		var index_path=bam_path+".bai"
 		
 		var oTrack={
@@ -119,7 +118,7 @@ var init = function(){
 			"format": "bam",
 			"type": "alignment",
 
-			"color": "grey", //i%2?"red":"blue", // 0 or 1
+			"color": "rgb(230,230,230)", //i%2?"red":"blue", // 0 or 1
 
 			showAlignments: true, //显示比对峰
 
