@@ -1,0 +1,117 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test5_7: multiple bams, human PBMC(scPolyA-seq2), add using js; {colorBy: "strand"}; {hg38: Gapdh, Actb, };
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// tools
+var dev=function(x, y){ 
+	rs=(x - x%y)/y; 
+	return(rs); 
+}
+
+
+// ********************* resources *********************
+
+// refer in local
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+//1. settings
+    var options =
+	{
+		//genome: "hg38",
+        reference: hg38_local,
+		locus: "chr10:78,039,965-78,041,277",
+		tracks: []
+	};
+
+
+var colors=[ //"#A80000", 
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+
+// add fastq tracks
+var result=  {
+"all UMI":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "CACGGCCT", "GGGCGTCA", "TATGCCAA"],
+"pA reads":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "CACGGCCT", "GGGCGTCA", "TATGCCAA"],
+}
+
+
+var j=0
+for(var i=0; i<result["all UMI"].length; i++){
+    j+=1;
+    for(var type in result){
+        if (type =="all UMI"){
+            var path0="B03_bam_rmdup/"
+        }else{
+            var path0="B04_bam_pA/pA_"
+        }
+    
+		console.log(j, "adding track", type, result[type][i], "color:", colors[j]);
+
+		var cid=result[type][i];
+		//var path="sync_dataset/map/SRR5227988_Aligned.sortedByCoord.out.bam"
+		//var bam_path="http://x.biomooc.com:8892/list/chenxi/batch0/S3/05_split_bam/S3_"+cid+".bam";
+		var bam_path="http://x.biomooc.com:8892/list/"+path0+cid+".bam";
+		var index_path=bam_path+".bai"
+
+		var oTrack={
+			"name": type+"_["+i+"]_"+result[type][i],
+			"url": bam_path,
+			"indexURL": index_path,
+			"format": "bam",
+			"type": "alignment",
+
+			"color": colors[ j ], //set colors: red
+
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:50, //150, //total height: default 300
+			coverageTrackHeight:40, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+		options.tracks.push(oTrack);
+	}
+}
+
+
+
+//2. run IGV 
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			console.log("Created IGV browser");	
+		})
+</script>
