@@ -69,6 +69,10 @@ Serving HTTP on 0.0.0.0 port 8890 (http://0.0.0.0:8890/) ...
 
 Or we can use [DaisyHttp](https://github.com/BioMooc/DaisyHttp) as data server.
 
+```
+$ python3 /home/wangjl/data/project/DaisyHttp/DaisyHttp.py 8890 /home/wangjl/data/project/scIGV/
+```
+
 
 
 ### reference genome

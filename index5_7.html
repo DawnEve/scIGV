@@ -2,8 +2,11 @@
 <span>
 help: https://github.com/igvteam/igv.js/wiki 
 | 
-test5_7: multiple bams, human PBMC(scPolyA-seq2), add using js; {colorBy: "strand"}; {hg38: Gapdh, Actb, };
+test5_7: multiple bams, human <b class="red">PBMC(scPolyA-seq2)</b>, add using js; {colorBy: "strand"}; {hg38: Gapdh, Actb, };
 </span>
+<style>
+.red{color:red;}
+</style>
 
 <script src="js/igv.min.js"></script>
 <div id="igv-div"></div>
@@ -56,6 +59,7 @@ var hg38_local={
 
 
 var colors=[ //"#A80000", 
+    "#eeeeee",
 	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
 	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
 	"#40E0D0","#5F9EA0"]
@@ -63,27 +67,29 @@ var colors=[ //"#A80000",
 
 // add fastq tracks
 var result=  {
-"all UMI":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "CACGGCCT", "GGGCGTCA", "TATGCCAA"],
-"pA reads":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "CACGGCCT", "GGGCGTCA", "TATGCCAA"],
+//"all UMI":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "GCTATCGG",  "TATGCCAA"],
+"pA reads":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "GCTATCGG",  "TATGCCAA"],
 }
 
 
 var j=0
-for(var i=0; i<result["all UMI"].length; i++){
+for(var i=0; i<result["pA reads"].length; i++){
     j+=1;
     for(var type in result){
         if (type =="all UMI"){
             var path0="B03_bam_rmdup/"
+			suffix=".bam"
         }else{
-            var path0="B04_bam_pA/pA_"
+			//var path0="B04_bam_pA/pA_"
+            var path0="06_dedup/18hRep2_"
+			suffix=".dedup.bam"
         }
+    
     
 		console.log(j, "adding track", type, result[type][i], "color:", colors[j]);
 
 		var cid=result[type][i];
-		//var path="sync_dataset/map/SRR5227988_Aligned.sortedByCoord.out.bam"
-		//var bam_path="http://x.biomooc.com:8892/list/chenxi/batch0/S3/05_split_bam/S3_"+cid+".bam";
-		var bam_path="http://x.biomooc.com:8892/list/"+path0+cid+".bam";
+		var bam_path="http://x.biomooc.com:8892/list/18hRep2/"+path0+cid+ suffix;
 		var index_path=bam_path+".bai"
 
 		var oTrack={
@@ -93,7 +99,7 @@ for(var i=0; i<result["all UMI"].length; i++){
 			"format": "bam",
 			"type": "alignment",
 
-			"color": colors[ j ], //set colors: red
+			"color": colors[ type=="all UMI"?0:j ], //set colors: red
 
 			//colorBy: "strand", // for alignment read
 			showAlignments: !true,
@@ -107,11 +113,41 @@ for(var i=0; i<result["all UMI"].length; i++){
 }
 
 
+//add whole bam
+var oTrack={
+    "name": "whole_dedup",
+    "url":      "http://x.biomooc.com:8892/list/18hRep2/B02_small_bam/18hRep2_Aligned.sortedByCoord.out.filtered.bam",
+    "indexURL": "http://x.biomooc.com:8892/list/18hRep2/B02_small_bam/18hRep2_Aligned.sortedByCoord.out.filtered.bam.bai",
+    "format": "bam",
+    "type": "alignment",
+
+    "color": colors[ j+1 ], //set colors: red
+
+    //colorBy: "strand", // for alignment read
+    showAlignments: !true,
+
+    height:50, //150, //total height: default 300
+    coverageTrackHeight:40, //coverage height: default 50
+    alignmentRowHeight:5, //height of reads, default 14 per reads;
+}
+options.tracks.push(oTrack);
+
 
 //2. run IGV 
+var browser;
 	var igvDiv = document.getElementById("igv-div");
 	igv.createBrowser(igvDiv, options)
-		.then(function (browser) {
+		.then(function (browser2) {
 			console.log("Created IGV browser");	
+            browser=browser2;
 		})
+// view a given range on genome, exec on F12 console
+// browser.search("chr10:96,750,095-96,751,424")
+
+/*
+get the current locus(or range or view) 
+> browser.toJSON().locus
+'chr10:132,549,209-132,570,201'
+
+*/
 </script>
