@@ -69,6 +69,7 @@ v0.0.6-3@south fix
 v0.0.6-4@south index5_7.html view scPolyA2:PBMC bam files.
 	browser.search("EGFR");
 v0.0.6-5@south fix
+v0.0.6-6@south update
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 

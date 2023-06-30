@@ -67,8 +67,10 @@ var colors=[ //"#A80000",
 
 // add fastq tracks
 var result=  {
-//"all UMI":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "GCTATCGG",  "TATGCCAA"],
-"pA reads":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "GCTATCGG",  "TATGCCAA"],
+	//"all UMI":["ACTCAGCA", "TCCTAAGT", "CATGTAAA", "GCTATCGG",  "TATGCCAA"],
+   "pA reads":["CACATGCG", "CATGTAAA", "TGGACAGC", "CATACTTA", "TAGAGCTA", "TGTTCATG", 
+                "GAGCGGTG", "TATCGATA", "CTATAGTA", "GCGCAGGA", "CGTCGGGT", "GCATATGG"],
+	// "ACTCAGCA", "TCCTAAGT", "CATGTAAA", "GCTATCGG",  "TATGCCAA"],
 }
 
 
@@ -104,8 +106,8 @@ for(var i=0; i<result["pA reads"].length; i++){
 			//colorBy: "strand", // for alignment read
 			showAlignments: !true,
 
-			height:50, //150, //total height: default 300
-			coverageTrackHeight:40, //coverage height: default 50
+			height:25, //150, //total height: default 300
+			coverageTrackHeight:20, //coverage height: default 50
 			alignmentRowHeight:5, //height of reads, default 14 per reads;
 		}
 		options.tracks.push(oTrack);
@@ -114,23 +116,32 @@ for(var i=0; i<result["pA reads"].length; i++){
 
 
 //add whole bam
-var oTrack={
-    "name": "whole_dedup",
-    "url":      "http://x.biomooc.com:8892/list/18hRep2/B02_small_bam/18hRep2_Aligned.sortedByCoord.out.filtered.bam",
-    "indexURL": "http://x.biomooc.com:8892/list/18hRep2/B02_small_bam/18hRep2_Aligned.sortedByCoord.out.filtered.bam.bai",
-    "format": "bam",
-    "type": "alignment",
+sampleColors=["blue", "red", "green"]
+var arr=[0,18,48];
+for(var j in arr){
+	var h=arr[j];
+	for(var i=1; i<4; i++){
+		if(h==0 && i==3){ continue;}
+		var oTrack={
+			"name": h+"hRep"+i,
+			"url":      "http://x.biomooc.com:8892/list/"+h+"hRep"+i+"/07_merged/merged.sort.bam",
+			"indexURL": "http://x.biomooc.com:8892/list/"+h+"hRep"+i+"/07_merged/merged.sort.bam.bai",
+			"format": "bam",
+			"type": "alignment",
 
-    "color": colors[ j+1 ], //set colors: red
+			"color": sampleColors[j],
 
-    //colorBy: "strand", // for alignment read
-    showAlignments: !true,
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
 
-    height:50, //150, //total height: default 300
-    coverageTrackHeight:40, //coverage height: default 50
-    alignmentRowHeight:5, //height of reads, default 14 per reads;
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:20, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+		options.tracks.push(oTrack);
+	}
 }
-options.tracks.push(oTrack);
+
 
 
 //2. run IGV 
