@@ -9,6 +9,19 @@ As the document of igv.js is Not Good, the first thing is to try some key parame
 
 > wiki: https://github.com/igvteam/igv.js/wiki
 
+```
+How to init?
+1. Must use DaisyHttp server to start igv.js web server, as igv.js
+- github.com/BioMooc/DaisyHttp
+
+2. Http server for bam data must suppport Range header.
+- also can use DaisyHttp
+
+F12 console:
+> igv.version()
+'2.15.10'
+'2.12.2'
+```
 
 
 ## lean IGV.js

@@ -1,11 +1,11 @@
 <meta charset=utf8>
 <span>
-help: https://github.com/igvteam/igv.js/wiki 
-| 
-test8: view <span class=red>nanopore bam file</span>, hg38_local;
+	test8: view <span class=red>nanopore bam file</span>, hg38_local;
 </span>
 
 <!--
+help: https://github.com/igvteam/igv.js/wiki 
+| 
 web server
 $ python3 ~/soft/DaisyHttp/DaisyHttp.py 10000 ~/soft/scIGV
 data server
@@ -17,7 +17,7 @@ clean3.NanoFilt.sort.unmap.bam
 .red{color: red;}
 </style>
 
-<script src="js/igv.min.js"></script>
+<script src="js/igv.js"></script>
 <div id="igv-div"></div>
 
 <script>
@@ -72,16 +72,19 @@ var hg38_local={
 	
 	"tracks": [
 	  {
-		"name": "Refseq Genes",
+		"id": "hg38",
+		//"name": "Refseq Genes",
+		"name": "Human (GRCh38/hg38)",
 		"format": "refgene",
-		"id": "hg38_genes",
+
 		"url": "ref/hg38/ncbiRefSeq.txt.gz",
 		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+
 		"visibilityWindow": -1,
 		"supportsWholeGenome": false,
 		"removable": false,
 		"order": 1000000,
-		height:300,   //height of ref track
+		height:200,   //height of ref track
 		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
 	  }
 	],
@@ -107,7 +110,7 @@ var init = function(){
 	var index_path=bam_path+".bai"
 	
 	var oTrack={
-		"name": "nanopore sample",
+		"name": "nanopore",
 		"url": bam_path,
 		"indexURL": index_path,
 		"format": "bam",
@@ -117,27 +120,26 @@ var init = function(){
 
 		showAlignments: true, //显示比对峰
 
-		height:250, //total height: default 300
-		//coverageTrackHeight:0, //coverage height: default 50
+		height:400, //total height: default 300
+		coverageTrackHeight:100, //coverage height: default 50
 		alignmentRowHeight:14, //height of reads, default 14 per reads;
 	}
 	options.tracks.push(oTrack);
-	
 
 	//2. run IGV 
 	var igvDiv = document.getElementById("igv-div");
 	igv.createBrowser(igvDiv, options)
 		.then(function (browser) {
-			//browser.search( getUrlParam("gene") ); //'EGFR'
-			console.log("Created IGV browser");	
+			console.log("Created IGV browser");
+			browser.search( getUrlParam("gene") || 'EGFR' ); //接收URL参数 ?gene=CCND1
+			window.igv.handler=browser;
 		})
 }
 
 // init the project
 addEvent(window,'load',function(){
-	console.log("before init()");	
 	init();
-	console.log("after init()");	
 });
 
+// igv.handler.search("chr1:34785238")
 </script>

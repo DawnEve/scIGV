@@ -71,11 +71,17 @@ v0.0.6-4@south index5_7.html view scPolyA2:PBMC bam files.
 v0.0.6-5@south fix
 v0.0.6-6@south update
 # Go back ZZ
-v0.0.6-7@hzBig add samview [2023.8.10]
+v0.0.6-7@hzBig add sam view of minimap2/ [2023.8.10]
+v0.0.6-8@hzBig 替换 igv [2023.8.10]
+v0.0.6-9@hzBig index8.html 使用 igv.js，后者使用本地文件和接口，完全本地化 [2023.8.10]
+	添加 MIT 许可证；
+	接口名字: /api2/genomes/locus 由另一个项目 SeqReportSys 提供
 # ==> commit
-# =========> push to origin master: https://github.com/DawnEve/scIGV
+# =========> push to origin master: git@gitee.com:dawnEve/scIGV.git
+# ===============> push to github monthly:  https://github.com/DawnEve/scIGV
 
 todo: R/ string, df;
+
 
 
 
