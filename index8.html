@@ -1,0 +1,143 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test8: view <span class=red>nanopore bam file</span>, hg38_local;
+</span>
+
+<!--
+web server
+$ python3 ~/soft/DaisyHttp/DaisyHttp.py 10000 ~/soft/scIGV
+data server
+$ python3 ~/soft/DaisyHttp/DaisyHttp.py 10001 /home/wangjl/data/project/mNGS/yinqs/02/
+clean3.NanoFilt.sort.unmap.bam
+-->
+
+<style>
+.red{color: red;}
+</style>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* tools *********************
+//get parameters from URL
+function getUrlParam(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+
+//bind event to object
+function addEvent(obj,ev,fn){
+	if(obj.addEventListener){
+		//ff:addEventListener
+		obj.addEventListener(ev,fn,false);
+	}else{
+		//IE:attachEvent
+		obj.attachEvent('on'+ev,fn);
+	}
+}
+
+//ajax get file contents;
+function ajax(fileName, success){
+	var xmlhttp=new XMLHttpRequest(); //1.获取对象
+	//2.绑定回调函数
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var text =xmlhttp.responseText;
+			//替换html标签为实体
+			//text = convertHTML(text);
+			success(text);
+		}
+	}
+	//3.设定访问的url
+	xmlhttp.open("GET", fileName, true);
+	//4.发送请求
+	xmlhttp.send();
+}
+
+
+// ********************* resources *********************
+
+// refer in local
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:300,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+//1. settings
+var options ={
+	//genome: "hg38",
+	reference: hg38_local,
+	locus: "chr1:34,785,147-34,785,188", //"chr1:774,833-774,911",
+	tracks: []
+};
+
+// set colors
+var colors=[ //"#A80000", 
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+var init = function(){	
+	var bam_path="http://s3.biomooc.com:10001/list/clean3.NanoFilt.sort.map.bam";
+	var index_path=bam_path+".bai"
+	
+	var oTrack={
+		"name": "nanopore sample",
+		"url": bam_path,
+		"indexURL": index_path,
+		"format": "bam",
+		"type": "alignment",
+
+		"color": "rgb(230,230,230)", //i%2?"red":"blue", // 0 or 1
+
+		showAlignments: true, //显示比对峰
+
+		height:250, //total height: default 300
+		//coverageTrackHeight:0, //coverage height: default 50
+		alignmentRowHeight:14, //height of reads, default 14 per reads;
+	}
+	options.tracks.push(oTrack);
+	
+
+	//2. run IGV 
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			//browser.search( getUrlParam("gene") ); //'EGFR'
+			console.log("Created IGV browser");	
+		})
+}
+
+// init the project
+addEvent(window,'load',function(){
+	console.log("before init()");	
+	init();
+	console.log("after init()");	
+});
+
+</script>
