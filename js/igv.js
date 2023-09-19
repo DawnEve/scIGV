@@ -57545,7 +57545,7 @@
         timeout: 5000,
         type: "plain",   // Legacy plain text support -- deprecated
         //url: 'https://igv.org/genomes/locus.php?genome=$GENOME$&name=$FEATURE$',
-        url: 'http://192.168.1.3:9002/api2/genomes/locus?genome=$GENOME$&name=$FEATURE$',
+        url: 'http://192.168.1.3:8002/api2/genomes/locus?genome=$GENOME$&name=$FEATURE$',
         coords: 0,
         chromosomeField: "chromosome",
         startField: "start",

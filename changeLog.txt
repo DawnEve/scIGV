@@ -76,6 +76,8 @@ v0.0.6-8@hzBig 替换 igv [2023.8.10]
 v0.0.6-9@hzBig index8.html 使用 igv.js，后者使用本地文件和接口，完全本地化 [2023.8.10]
 	添加 MIT 许可证；
 	接口名字: /api2/genomes/locus 由另一个项目 SeqReportSys 提供
+v0.0.7-0@hzBig index8.html for hg19, index8_2 for hg38; update api in SRS [2023.9.19]
+
 # ==> commit
 # =========> push to origin master: git@gitee.com:dawnEve/scIGV.git
 # ===============> push to github monthly:  https://github.com/DawnEve/scIGV

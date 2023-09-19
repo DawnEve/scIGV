@@ -1,6 +1,6 @@
 <meta charset=utf8>
 <span>
-	test8: view <span class=red>nanopore bam file</span>, hg19_local;
+	test8: view <span class=red>nanopore bam file</span>, hg38_local;
 </span>
 
 <!--
@@ -62,23 +62,23 @@ function ajax(fileName, success){
 // ********************* resources *********************
 
 // refer in local
-var hg19_local={
-	"id": "hg19",
-	"name": "Human (GRCh37/hg19)",
-	"fastaURL": "ref/hg19/hg19.fasta", //?someRandomSeed=0
-	"indexURL": "ref/hg19/hg19.fasta.fai",
-	"cytobandURL": "ref/hg19/cytoBand.txt",
-	"aliasURL": "ref/hg19/hg19_alias.tab",
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
 	
 	"tracks": [
 	  {
-		"id": "hg19",
+		"id": "hg38",
 		//"name": "Refseq Genes",
-		"name": "Human (GRCh37/hg19)",
+		"name": "Human (GRCh38/hg38)",
 		"format": "refgene",
 
-		"url": "ref/hg19/ncbiRefSeq.sorted.txt.gz",
-		"indexURL": "ref/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
 
 		"visibilityWindow": -1,
 		"supportsWholeGenome": false,
@@ -93,8 +93,8 @@ var hg19_local={
 
 //1. settings
 var options ={
-	//genome: "hg19",
-	reference: hg19_local,
+	//genome: "hg38",
+	reference: hg38_local,
 	locus: "chr1:34,785,147-34,785,188", //"chr1:774,833-774,911",
 	tracks: []
 };
@@ -105,7 +105,7 @@ var colors=[ //"#A80000",
 	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
 	"#40E0D0","#5F9EA0"]
 
-var init = function(){
+var init = function(){	
 	var bam_path="http://s3.biomooc.com:10001/list/clean3.NanoFilt.sort.map.bam";
 	var index_path=bam_path+".bai"
 	
@@ -124,7 +124,7 @@ var init = function(){
 		coverageTrackHeight:100, //coverage height: default 50
 		alignmentRowHeight:14, //height of reads, default 14 per reads;
 	}
-	//options.tracks.push(oTrack);
+	options.tracks.push(oTrack);
 
 	//2. run IGV 
 	var igvDiv = document.getElementById("igv-div");
