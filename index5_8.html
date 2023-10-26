@@ -1,0 +1,629 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test5_8: multiple bams, hg38 <b class="red">HeLa Fucci(GSE104736) & AML cell lines</b>, add using js; {colorBy: "sample"}; {hg38: GAPDH, ACTB, };
+</span>
+<style>
+.red{color:red;}
+</style>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* resources *********************
+
+// refer in local
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+//1. settings
+var options = {
+    //genome: "hg38",
+    reference: hg38_local,
+    locus: 'chr1:246,766,264-246,771,021', //"chr10:78,039,965-78,041,277",
+    tracks: []
+};
+
+
+var colors=[ //"#A80000", 
+    "#eeeeee",
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+//add whole bam
+var sampleColors = ["blue", "red", "green"]
+var phases = ["G1", "S", "G2"]
+
+// cell cycle: HeLa
+for(var j=0; j<phases.length; j++){
+	var phase = phases[j];
+	for(var i=1; i<4; i++){
+		if(i>1){ continue; }
+
+        var key = phase+"_rep"+i;
+        var bam_path = "http://z.biomooc.com:8892/list/map/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "HeLa_"+key,
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": sampleColors[j],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	}
+}
+
+// cell cycle: U2OS
+for(var j=0; j<phases.length; j++){
+	var phase = phases[j];
+	for(var i=1; i<3; i++){
+		if(i>1){ continue; }
+
+        var key = "U2OS_"+phase+"_rep"+i;
+        var bam_path = "http://z.biomooc.com:8892/list/map/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": key,
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": sampleColors[j],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	}
+}
+
+
+
+
+
+//control: hESC
+var SRR = ["SRR16768631", "SRR16768632","SRR16768633",
+	"SRR16768646", "SRR16768647", "SRR16768648" ]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/hESC/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "hESC_" + (j>2?"2_":"") + "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": j>2?"#bbbbbb":"#eeeeee",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+//control: 293T
+var SRR = ["SRR11858511", "SRR11858512" ]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/293T/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "293T"+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#007361",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+//control: sperm hSperm v2
+var cellname="hSperm"
+var SRR = ["SRR14370448", "SRR14370449"]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": cellname + "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#e72287",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+//control: nerve
+var SRR = ["SRR10821187", "SRR10821188","SRR10821189"]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/nerve/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "nerve" + "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "orange",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+//control: brain BT142 v2
+var cellname="BT142"
+var SRR = ["SRR10278840", "SRR10278841","SRR10278842"]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": 'brain_'+ cellname + "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#00aba9",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+//control: brain TS603 v2
+var cellname="TS603"
+var SRR = ["SRR10278843", "SRR10278844", "SRR10278845"]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": 'brain_'+ cellname + "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#ffdfa9",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:0, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+//T Cell line: Jurkat
+var SRR = ["SRR22741426", "SRR22741427", "SRR22741428"]
+
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/Jurkat/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "Jurkat_"+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#00b050",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+//T Cell line: MOLT-4
+var SRR = ["SRR18574394", "SRR18574395", "SRR18574396"];
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/MOLT-4/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "MOLT-4"+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#ed553b",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+
+// HL60
+var SRR = ["SRR17446841", "SRR17446838", "SRR17446835", //batch 2
+	"SRR12759747"] //, "SRR12759748", "SRR12759749", "SRR12759750", "SRR12759751", "SRR12759752"] //batch 1: 峰形异常，在3UTR末尾最高
+
+for(var j=0; j<SRR.length; j++){
+	if( (j%3) >=2 ){continue;}
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/HL60/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "HL60_"+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#eceb5c",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+//kasumi-1
+var SRR = ["SRR20729562", "SRR20729563", "SRR20729564",
+	"SRR11247521", "SRR11247522", "SRR11247523", "SRR11247524"] //第二批
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){
+		console.log("--------------continue==>", j, phase)
+		continue; 
+	}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/kasumi-1/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "Kasumi-1_"+ (j>2?"1":"2")+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": (j>2?"purple":"#C785C8"), //j>2?"red":"blue",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+var SRR = ["SRR20751818", "SRR20751819"]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/NB4/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "NB4_"+(j>2?"kd":"wt")+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "cyan", //j>2?"red":"blue",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+var SRR = ["SRR15929145", "SRR15929146", "SRR15929147",
+	"SRR23203932", "SRR23203933", "SRR23203934"]
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=1 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/U937/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "U937_"+(j>2?"_shCtrl":'wrong?') +"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": j>2?"pink":"deeppink",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+// macrophage
+var SRR = ["SRR24910828", "SRR24910829", "SRR24910830", "SRR24910831",
+	"SRR24910832", "SRR24910833", "SRR24910834", "SRR24910835",
+	"SRR24910836", "SRR24910837", "SRR24910838", "SRR24910839"]
+var types=["M2","M1", "M0"];
+var colors=["#f9a31c", "#6bccdf", "#b84e9d"];
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%4) >=1 ){continue;}
+
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/THP-1/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "THP-1_"+ types[ Math.floor(j / 4) ] +"_rep"+ ((j%4)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": colors[ Math.floor(j / 4) ],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+var SRR = ["SRR26016544", "SRR26016545", // 这几个 8Gb 测序量
+	"SRR11067848", "SRR11067849"]; //后两个 600Mb 测序量太低！
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/MV4-11/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "MV4-11_"+ "_rep"+ ((j%2)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#9dcd69",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+var SRR = ["SRR21758078", "SRR21758079", "SRR21758080"];
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=1 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/HEL/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "HEL_"+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#ffff00",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+var SRR = ["SRR20396319", "SRR20396320", "SRR20396321"];
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=1 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/OCI-AML3/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "OCI-AML3_"+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#3caea3",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+
+
+
+
+//2. run IGV
+var browser;
+
+var igvDiv = document.getElementById("igv-div");
+igv.createBrowser(igvDiv, options)
+    .then(function (browser2) {
+        console.log("Created IGV browser");	
+        browser=browser2;
+    })
+// view a given range on genome, exec on F12 console
+// browser.search("chr10:96,750,095-96,751,424")
+
+/*
+get the current locus(or range or view) 
+> browser.toJSON().locus
+'chr10:132,549,209-132,570,201'
+
+*/
+</script>

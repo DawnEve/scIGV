@@ -1,0 +1,144 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test5_9: multiple bams, hg38 <b class="red">BMMC(10x)</b>, add using js; {colorBy: "sample"}; {hg38: Gapdh, Actb, };
+</span>
+<style>
+.red{color:red;}
+</style>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* resources *********************
+
+// refer in local
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+// refer in local
+var hg19_local={
+	"id": "hg19",
+	"name": "Human (GRCh37/hg19)",
+	"fastaURL": "ref/hg19/hg19.fasta", //?someRandomSeed=0
+	"indexURL": "ref/hg19/hg19.fasta.fai",
+	"cytobandURL": "ref/hg19/cytoBand.txt",
+	"aliasURL": "ref/hg19/hg19_alias.tab",
+	
+	"tracks": [
+	  {
+		"id": "hg19",
+		//"name": "Refseq Genes",
+		"name": "Human (GRCh37/hg19)",
+		"format": "refgene",
+
+		"url": "ref/hg19/ncbiRefSeq.sorted.txt.gz",
+		"indexURL": "ref/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
+
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:200,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+
+
+//1. settings
+var options = {
+    //genome: "hg38",
+    reference: hg19_local,
+    locus: "chr1:246,929,957-246,932,007",
+    //locus: "chr10:78,039,965-78,041,277",
+    tracks: []
+};
+
+
+var colors=[ //"#A80000", 
+    "#eeeeee",
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+//add whole bam
+var sampleColors = ["blue", "red", "green"]
+var clusters = ["12", "19", "20"]
+var samples = ["donor1", "donor2", "AML027", "AML035"]
+
+//for(var i=1; i<4; i++){
+var counter=-1
+for(var j in clusters){
+    var cluster = clusters[j];
+    for(var i in samples){
+        var sample =samples[i];
+        counter++;
+
+        var key = sample+"_cluster"+cluster;
+        var bam_path = "http://z.biomooc.com:8893/list/bam/"+key+".bam";
+		var oTrack={
+			"name": key,
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": (counter %4) <2? "blue":"red",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+		console.log("loading bam2: ", key)
+		options.tracks.push(oTrack);
+	}
+}
+
+//2. run IGV 
+var browser;
+
+var igvDiv = document.getElementById("igv-div");
+igv.createBrowser(igvDiv, options)
+    .then(function (browser2) {
+        console.log("Created IGV browser");	
+        browser=browser2;
+    })
+// view a given range on genome, exec on F12 console
+// browser.search("chr10:96,750,095-96,751,424")
+
+/*
+get the current locus(or range or view) 
+> browser.toJSON().locus
+'chr10:132,549,209-132,570,201'
+
+*/
+</script>

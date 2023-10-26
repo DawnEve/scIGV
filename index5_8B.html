@@ -1,0 +1,254 @@
+<meta charset=utf8>
+<span>
+help: https://github.com/igvteam/igv.js/wiki 
+| 
+test5_8B: multiple bams, hg38 <b class="red">Kasumi-1 KD, CD34+Blood/BM</b>, add using js; {colorBy: "sample"}; {hg38: GAPDH, ACTB, };
+</span>
+<style>
+.red{color:red;}
+</style>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* resources *********************
+
+// refer in local
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+//1. settings
+var options = {
+    //genome: "hg38",
+    reference: hg38_local,
+    locus: 'chr1:246,766,264-246,771,021', //"chr10:78,039,965-78,041,277",
+    tracks: []
+};
+
+
+var colors0=[ //"#A80000", 
+    "#eeeeee",
+	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
+	"#40E0D0","#5F9EA0"]
+
+//add whole bam
+var sampleColors = ["blue", "red", "green"]
+var phases = ["G1", "S", "G2"]
+
+
+
+
+
+//primary: CD34 healthy v2
+var cellname="CD34"
+var SRR = ["GSM4403509", "GSM4403510","GSM4403511", "GSM4403512", "GSM4403513",
+    "GSM4403514", "GSM4403515", "GSM4403516", "GSM4403517",
+    "GSM4403518", "GSM4403519", "GSM4403520", "GSM4403521"]
+var names=["HSPC_1", "HSPC_2", "HSPC_3", "HSPC_4", "HSPC_5",
+    "AML_Pt1", "AML_Pt2", "AML_Pt3", "AML_Pt4",
+    "CBF_Pt1", "CBF_Pt2", "CBF_Pt3", "CBF_Pt4"]
+var colors=[new Array(5).fill("#92d050"), new Array(4).fill("#ff7f00"), new Array(4).fill("#ff0097")].flat();
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": cellname + "_" + names[j], //+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": colors[j],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+
+
+//Kasumi-1
+var SRR = ["SRR20729562", "SRR20729563", "SRR20729564",
+	"SRR11247521", "SRR11247522", "SRR11247523", "SRR11247524", //第二批
+    "SRR11247525", "SRR11247526", "SRR11247527", "SRR11247528", //kd-1
+    "SRR11247529", "SRR11247530", "SRR11247531", "SRR11247532" //kd-2
+]
+var types=[ new Array(3).fill(0), new Array(4).fill(1), new Array(4).fill(2), new Array(4).fill(3)].flat();
+var colors=['#eeeeee', '#69cdde','#b74e9b', '#e9e959']
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/kasumi-1/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "Kasumi-1_"+ ['', 'wt', 'kd1', 'kd2'][types[j]], //+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": colors[types[j]],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+var SRR = ["SRR20751818", "SRR20751819"]
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+    if( (j%3) >=1 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/NB4/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "NB4_"+(j>2?"kd":"wt")+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "cyan", //j>2?"red":"blue",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+var SRR = ["SRR26016544", "SRR26016545"] //, // 这几个 8Gb 测序量
+	//"SRR11067848", "SRR11067849"]; //后两个 600Mb 测序量太低！
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+    if( (j%3) >=1 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/MV4-11/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "MV4-11_"+ "_rep"+ ((j%2)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#9dcd69",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+
+var SRR = ["SRR20396319", "SRR20396320", "SRR20396321"];
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=1 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/OCI-AML3/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "OCI-AML3_"+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#3caea3",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+
+
+
+
+
+//2. run IGV
+var browser;
+
+var igvDiv = document.getElementById("igv-div");
+igv.createBrowser(igvDiv, options)
+    .then(function (browser2) {
+        console.log("Created IGV browser");	
+        browser=browser2;
+    })
+// view a given range on genome, exec on F12 console
+// browser.search("chr10:96,750,095-96,751,424")
+
+/*
+get the current locus(or range or view) 
+> browser.toJSON().locus
+'chr10:132,549,209-132,570,201'
+
+*/
+</script>
