@@ -50,6 +50,21 @@ var options = {
 };
 
 
+
+// add bed file of pA sites
+var oBed={
+	"name": "polyA DB2",
+	"type": "annotation",
+	"format": "bed",
+	"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+	"color": "red",
+	height:50, //total height: default 300
+}
+options.tracks.push(oBed);
+
+
+
+
 var colors0=[ //"#A80000", 
     "#eeeeee",
 	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
@@ -64,7 +79,7 @@ var phases = ["G1", "S", "G2"]
 
 
 
-//primary: CD34 healthy v2
+//primary: CD34 healthy v2 RNA-seq
 var cellname="CD34"
 var SRR = ["GSM4403509", "GSM4403510","GSM4403511", "GSM4403512", "GSM4403513",
     "GSM4403514", "GSM4403515", "GSM4403516", "GSM4403517",
@@ -99,11 +114,44 @@ for(var j=0; j<SRR.length; j++){
 
 
 
+//primary: CD34 healthy v2 3'READS
+var cellname="CD34_3READS"
+var SRR = ["SRR11272944", "SRR11272945", //heathy x2
+    "SRR11272946", "SRR11272947", "SRR11272948", "SRR11272949", //AML
+    "SRR11272950", "SRR11272951", "SRR11272952", "SRR11272953"] //BCF
+var names=["HSPC_6", "HSPC_7", 
+    "AML_Pt1", "AML_Pt2", "AML_Pt3", "AML_Pt4",
+    "CBF_Pt1", "CBF_Pt2", "CBF_Pt3", "CBF_Pt4"]
+var colors=[new Array(2).fill("#92d050"), new Array(4).fill("#ff7f00"), new Array(4).fill("#ff0097")].flat();
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/short_"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": cellname + "_" + names[j], //+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": colors[j],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
 
 
 
 
-//Kasumi-1
+
+//Kasumi-1 RNA-seq
 var SRR = ["SRR20729562", "SRR20729563", "SRR20729564",
 	"SRR11247521", "SRR11247522", "SRR11247523", "SRR11247524", //第二批
     "SRR11247525", "SRR11247526", "SRR11247527", "SRR11247528", //kd-1
@@ -137,6 +185,41 @@ for(var j=0; j<SRR.length; j++){
 
 
 
+//Kasumi-1 3'READS
+var SRR = ["SRR11247533", "SRR11247534", "SRR11247535",  //wt
+    "SRR11247536", "SRR11247537", "SRR11247538", "SRR11247539",  //kd-1
+    "SRR11247540", "SRR11247541", "SRR11247542" //kd-2
+]
+var types=[ new Array(3).fill(0), new Array(4).fill(1), new Array(3).fill(2)].flat();
+var colors=['#69cdde','#b74e9b', '#e9e959']
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/kasumi-1_3READS/short_"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": "Kasumi-1_3READS_"+ ['wt', 'kd1', 'kd2'][types[j]], //+"_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": colors[types[j]],
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
+//NB4
 var SRR = ["SRR20751818", "SRR20751819"]
 for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
@@ -166,7 +249,7 @@ for(var j=0; j<SRR.length; j++){
 
 
 
-
+//MV4-11
 var SRR = ["SRR26016544", "SRR26016545"] //, // 这几个 8Gb 测序量
 	//"SRR11067848", "SRR11067849"]; //后两个 600Mb 测序量太低！
 for(var j=0; j< SRR.length; j++){
@@ -198,7 +281,7 @@ for(var j=0; j< SRR.length; j++){
 
 
 
-
+//OCI-AML3
 var SRR = ["SRR20396319", "SRR20396320", "SRR20396321"];
 for(var j=0; j< SRR.length; j++){
 	var phase = SRR[j];
@@ -227,7 +310,25 @@ for(var j=0; j< SRR.length; j++){
 
 
 
-
+// add bed file of pA sites
+var oBed={
+		"name": "polyA DB2",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"color": "red",
+		height:50, //total height: default 300
+	}
+options.tracks.push(oBed);
+var oBed={
+		"name": "polyA DB3",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB3-liftover.bed",
+		"color": "black",
+		height:50, //total height: default 300
+	}
+options.tracks.push(oBed);
 
 
 

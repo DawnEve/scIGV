@@ -50,6 +50,19 @@ var options = {
 };
 
 
+// add bed file of pA sites
+var oBed={
+	"name": "polyA DB2",
+	"type": "annotation",
+	"format": "bed",
+	"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+	"color": "red",
+	height:50, //total height: default 300
+}
+options.tracks.push(oBed);
+
+
+
 var colors=[ //"#A80000", 
     "#eeeeee",
 	"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
@@ -354,6 +367,37 @@ for(var j=0; j< SRR.length; j++){
 
 
 
+//T Cell line: TEX v2
+var cellType="TEX"
+var SRR = ["SRR6033649", "SRR6033649"];
+for(var j=0; j< SRR.length; j++){
+	var phase = SRR[j];
+	if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://z.biomooc.com:8892/list/"+cellType+"/"+key+"_Aligned.sortedByCoord.out.bam";
+		var oTrack={
+			"name": cellType+ "_rep"+ ((j%3)+1),
+			"url":     bam_path ,
+			"indexURL": bam_path + ".bai",
+			"format": "bam",
+			"type": "alignment",
+			"color": "#20948b",
+			//colorBy: "strand", // for alignment read
+			showAlignments: !true,
+
+			height:30, //150, //total height: default 300
+			coverageTrackHeight:30, //coverage height: default 50
+			alignmentRowHeight:5, //height of reads, default 14 per reads;
+		}
+        console.log("loading bam: ", key)
+		options.tracks.push(oTrack);
+	//}
+}
+
+
+
+
 
 
 // HL60
@@ -600,6 +644,30 @@ for(var j=0; j< SRR.length; j++){
 	//}
 }
 
+
+
+
+
+
+// add bed file of pA sites
+var oBed={
+		"name": "polyA DB2",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"color": "red",
+		height:50, //total height: default 300
+	}
+options.tracks.push(oBed);
+var oBed={
+		"name": "polyA DB3",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB3-liftover.bed",
+		"color": "black",
+		height:50, //total height: default 300
+	}
+options.tracks.push(oBed);
 
 
 

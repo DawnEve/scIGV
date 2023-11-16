@@ -70,7 +70,9 @@ v0.0.6-4@south index5_7.html view scPolyA2:PBMC bam files.
 	browser.search("EGFR");
 v0.0.6-5@south fix
 v0.0.6-6@south update
-v0.0.6-7@south add index 5_8, 5_8B for AML cell line; 5_9,5_9B for scRNA-seq of BMMC AML vs. ctrl;
+v0.0.6-7@HZBig add index 5_8, 5_8B for AML cell line; 5_9,5_9B for scRNA-seq of BMMC AML vs. ctrl;
+v0.0.6-8@HZBig add index 5_8C for cell cycle MDA-MB-231; [2023.11.16]
+	add polyA_DB2 3, in hg19, hg38
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 

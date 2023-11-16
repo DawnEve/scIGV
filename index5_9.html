@@ -123,6 +123,38 @@ for(var j in clusters){
 	}
 }
 
+
+
+
+
+// add bed file of pA sites
+var oBed={
+		"name": "polyA DB2",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg19.PolyADB2.bed",
+		"color": "red",
+		height:40, //total height: default 300
+	}
+options.tracks.push(oBed);
+var oBed={
+		"name": "polyA DB3",
+		"type": "annotation",
+		"format": "bed",
+		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg19.PolyADB3.bed",
+		"color": "black",
+		height:60, //total height: default 300
+	}
+options.tracks.push(oBed);
+
+
+
+
+
+
+
+
+
 //2. run IGV 
 var browser;
 
