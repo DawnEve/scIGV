@@ -2,7 +2,7 @@
 <span>
 help: https://github.com/igvteam/igv.js/wiki 
 | 
-test5_8C: multiple bams, hg38 <b class="red">HeLa Fucci(GSE104736) & MDA-MB-231</b>, add using js; {colorBy: "sample"}; {hg38: GAPDH, ACTB, };
+test5_8C: multiple bams, hg38 <b class="red">HeLa Fucci(GSE104736) & HeLa</b>, add using js; {colorBy: "sample"}; {hg38: GAPDH, ACTB, };
 </span>
 <style>
 .red{color:red;}
@@ -132,21 +132,16 @@ for(var j=0; j<phases.length; j++){
 
 
 
-//MDA-MB-231 v2
-/* https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE216497
-MDA-MB-231 cells were harvested at 0, 3, 4.5, 6, 7, 9, 10, 11.5, 13, and 16 hr after G1/S phase release. 
-For M phase arrest, when MDA-MB-231 cells were released from G1/S phase, 1 µg/ml nocodazole was added, and after 10 hr, 
-they were supplemented with 5 µg/ml actinomycin D.
-*/
-var cellname="MDA-MB-231"
+//HeLa v2 https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE216497
+var cellname="HeLa"
 var SRR = [
-    "SRR22029273","SRR22029272","SRR22029271","SRR22029270", "SRR22029269", "SRR22029268","SRR22029267","SRR22029266", "SRR22029265","SRR22029264",   
-    "SRR22029263", 
-    "SRR22029259", "SRR22029260", "SRR22029261", "SRR22029262", "SRR22029258", 
-      ]
-var times = ["S0", "S3", "S4.5", "S6", "S7", "S9", "S10", "S11.5", "S13", "S16", 
-    "ctrl", 
-    "ActD0", "ActD1.5", "ActD3", "ActD4.5", "ActD6"]
+    "SRR3535826", "SRR3535828", "SRR3535830", "SRR3535832", "SRR3535834", "SRR3535835", "SRR3535836", 
+    "SRR3535837", "SRR3535838", "SRR3535839", "SRR3535840", "SRR3535841", "SRR3535842", "SRR3535843", 
+    "SRR3616961", "SRR3616962"
+]
+var times = ["S0", "S3", "S4.5", "S6", "S9", "S10.5", "S12", 
+	"S15", "S18", "S19.5", "S21", "S22.5", "S25.5", "S30", 
+	"G1_b", "G1_a"]
 for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//if( (j%3) >=2 ){continue;}
@@ -159,7 +154,7 @@ for(var j=0; j<SRR.length; j++){
 			"indexURL": bam_path + ".bai",
 			"format": "bam",
 			"type": "alignment",
-			"color": colors[ j<10?3:(j==10?4:5)], //"deeppink",
+			"color": j<14?"deeppink":"#7BA947",
 			//colorBy: "strand", // for alignment read
 			showAlignments: !true,
 

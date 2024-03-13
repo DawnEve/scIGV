@@ -523,7 +523,7 @@ for(var j=0; j< SRR.length; j++){
 
 
 
-// macrophage
+// macrophage: M0, M1, M2;
 var SRR = ["SRR24910828", "SRR24910829", "SRR24910830", "SRR24910831",
 	"SRR24910832", "SRR24910833", "SRR24910834", "SRR24910835",
 	"SRR24910836", "SRR24910837", "SRR24910838", "SRR24910839"]
@@ -531,7 +531,7 @@ var types=["M2","M1", "M0"];
 var colors=["#f9a31c", "#6bccdf", "#b84e9d"];
 for(var j=0; j< SRR.length; j++){
 	var phase = SRR[j];
-	if( (j%4) >=1 ){continue;}
+	//if( (j%4) >=2 ){continue;}
 
 	//for(var i=1; i<3; i++){
         var key = phase;
