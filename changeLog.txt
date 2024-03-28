@@ -76,6 +76,7 @@ v0.0.6-8@HZBig add index 5_8C for cell cycle MDA-MB-231; [2023.11.16]
 v0.0.6-9@HZBig add index 5_8D for cell cycle HeLa; [2023.11.17]
 v0.0.7-0@sust how to add ajax from R API in index6.html [2024.3.13]
 	$ ls *html  | xargs grep -in "ajax" --color=auto
+v0.0.7-1@sust update index6.html [2023.3.28]
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
