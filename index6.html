@@ -149,7 +149,8 @@ function init(results){
 			var arr=cid.split("_");
 			var cb=arr[0], sample=arr[1];
 			//var bam_path="http://x.biomooc.com:8892/list/0hRep1/06_dedup/0hRep1_"+cid+".dedup.bam";
-			var bam_path="http://x.biomooc.com:8892/list/"+sample+"/06_dedup/"+sample+"_"+cb+".dedup.bam";
+			//var bam_path="http://x.biomooc.com:8892/list/"+sample+"/06_dedup/"+sample+"_"+cb+".dedup.bam";
+			var bam_path="http://j3.biomooc.com:8099/list/"+sample+"/06_dedup/"+sample+"_"+cb+".dedup.bam";
 			var index_path=bam_path+".bai"
 
 			var oTrack={
@@ -179,7 +180,8 @@ function init(results){
 		"name": "CD4 PBMC",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://x.biomooc.com:8892/list/annotate/bed/pas_bed/pas_40820.bed",
+		//"url": "http://x.biomooc.com:8892/list/annotate/bed/pas_bed/pas_40820.bed",
+		"url": "http://j3.biomooc.com:8099/list/annotate/bed/pas_bed/pas_40820.bed",
 		"color": "red",
 		height:50, //total height: default 300
 	}
@@ -189,7 +191,8 @@ function init(results){
 		"name": "polyA DB2(hg38)",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		//"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"url": "http://j3.biomooc.com:8090/list/ref/polyA_DB/hg38.PolyADB2-liftover.bed",
 		"color": "red",
 		height:50, //total height: default 300
 	}
@@ -206,10 +209,10 @@ function init(results){
 
 addEvent(window,'load',function(){
 	//1.request url to R API
-	// http://x.biomooc.com:8895/cid?cellType=time&gene=MSL1&n=2
+	// http://j3.biomooc.com:8895/cid?cellType=time&gene=MSL1&n=2
 	// {"0h":["TCGGGCCT_0hRep2","AAACTTAG_0hRep2"],
 	//	"18h":["TCACCCTT_18hRep1","GGAGATGC_18hRep1"],"48h":["TGAGGAAC_48hRep3","TTCTCGTG_48hRep3"]}
-	var url="http://x.biomooc.com:8895/cid?"; //cellType=HeLa2&n=5&gene=GRB10
+	var url="http://j3.biomooc.com:8895/cid?"; //cellType=HeLa2&n=5&gene=GRB10
 	url += "cellType="+getUrlParam("cellType")+"&";
 	url += "n="+getUrlParam("n")+"&";
 	url += "gene="+getUrlParam("gene").toUpperCase(); //human gene should be up case
@@ -220,5 +223,7 @@ addEvent(window,'load',function(){
 		console.log(x)
 		init(x);
 	})
+	//3. browser
+	// http://j3.biomooc.com:8090/list/index6.html?cellType=time&gene=MSL1&n=2
 });
 </script>
