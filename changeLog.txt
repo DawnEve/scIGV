@@ -78,6 +78,7 @@ v0.0.7-0@sust how to add ajax from R API in index6.html [2024.3.13]
 	$ ls *html  | xargs grep -in "ajax" --color=auto
 v0.0.7-1@sust update index6.html [2024.3.28]
 v0.0.7-2@picb update index6.html, using local J3 server [2024.4.25]
+v0.0.7-3@picb add index6B.html, using gencode gtf file [2024.7.24]
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
 
