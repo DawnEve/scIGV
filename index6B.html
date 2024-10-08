@@ -1,0 +1,264 @@
+<meta charset=utf8>
+<style>
+.red{color:red;}
+</style>
+<span>
+help: https://github.com/igvteam/igv.js/wiki
+|
+test6B: hg38(gtf); new scPolyA-seq2; All reads of UMI;
+Set reference height(test4); Use <span class=red>gencode GTF</span>
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* tools *********************
+//get parameters from URL
+function getUrlParam(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+
+//bind event to object
+function addEvent(obj,ev,fn){
+	if(obj.addEventListener){
+		//ff:addEventListener
+		obj.addEventListener(ev,fn,false);
+	}else{
+		//IE:attachEvent
+		obj.attachEvent('on'+ev,fn);
+	}
+}
+
+//ajax get file contents;
+function ajax(fileName, success){
+	var xmlhttp=new XMLHttpRequest(); //1.获取对象
+	//2.绑定回调函数
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var text =xmlhttp.responseText;
+			//替换html标签为实体
+			//text = convertHTML(text);
+			success(text);
+		}
+	}
+	//3.设定访问的url
+	xmlhttp.open("GET", fileName, true);
+	//4.发送请求
+	xmlhttp.send();
+}
+
+//var i=2; //放大倍数， height 的系数
+
+// not use remote resource
+var hg38_amazon= {
+	"id": "hg38",
+	
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa",
+	"indexURL": "https://s3.amazonaws.com/igv.broadinstitute.org/genomes/seq/hg38/hg38.fa.fai",
+	"cytobandURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/annotations/cytoBandIdeo.txt.gz",
+	"aliasURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/hg38_alias.tab",
+	"tracks": [
+		{
+			"name": "Refseq Genes",
+			
+			"height":200, // height of reference
+			//color:"red",  // color of this track
+			displayMode: ["COLLAPSED", "SQUISHED", "EXPANDED"][2], //是否折叠显示基因模型
+			
+			"format": "refgene",
+			"url": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz",
+			"indexURL": "https://s3.amazonaws.com/igv.org.genomes/hg38/ncbiRefSeq.txt.gz.tbi",
+			"visibilityWindow": -1,
+			"supportsWholeGenome": false,
+			"removable": false,
+			"order": 1000000,
+			"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"
+		}
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+// refer in local: not use
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+// refer in local: gencode
+var hg38_local_gencode={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/gencode/GRCh38.p13.genome.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/gencode/GRCh38.p13.genome.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "GRCh38",
+		"format": "gtf",
+        "type": "annotation",
+		"id": "hg38_genes",
+
+		"url": "ref/hg38/gencode/GRCh38.p13.sorted.gtf.gz",
+		"indexURL": "ref/hg38/gencode/GRCh38.p13.sorted.gtf.gz.tbi",
+
+		"visibilityWindow": -1,
+        //"visibilityWindow": 10000000, // 轨道的可见窗口大小
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+
+		"height":250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+var options =
+{
+	//genome: "hg38",
+	//init screen
+	//"locus": "chr1:246,766,637-246,768,733", 
+	//"locus": "chr7:50,585,360-50,601,271",
+	"locus": "chr21:45,512,381-45,521,866",
+	
+	reference:hg38_local_gencode,
+	tracks: []
+};
+	
+
+//add tracks
+//SLC19A1
+//TPRG1
+//TRIP4;
+//DDX39A
+
+var colors=["#FFA500", "#FF1493", "#4876FF",
+"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+            "#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB","#40E0D0","#5F9EA0",
+            "#FF1493","#0000CD","#008B8B","#FFE4B5","#8A2BE2","#228B22","#E9967A","#4682B4","#32CD32","#F0E68C","#FFFFE0","#EE82EE",
+            "#FF6347","#6A5ACD","#9932CC","#8B008B","#8B4513","#DEB887"
+]
+
+var results = {"0h":["CGGATGCT_0hRep1","ACATAGCG_0hRep2"],
+	"18h":["TGGTGGTA_18hRep2","TTCTCGTG_18hRep1"],
+	"48h":["TTAATCGG_48hRep1","TGGGACCG_48hRep1"]}
+
+
+
+// init the browser
+function init(results){
+	//0h, 18h, 48h
+	var i=-1
+	for(var key in results){
+		i++;
+		for(var j in results[key]){
+			var cid=results[key][j]
+			var arr=cid.split("_");
+			var cb=arr[0], sample=arr[1];
+			//var bam_path="http://x.biomooc.com:8892/list/0hRep1/06_dedup/0hRep1_"+cid+".dedup.bam";
+			//var bam_path="http://x.biomooc.com:8892/list/"+sample+"/06_dedup/"+sample+"_"+cb+".dedup.bam";
+			var bam_path="http://j3.biomooc.com:8099/list/"+sample+"/06_dedup/"+sample+"_"+cb+".dedup.bam";
+			var index_path=bam_path+".bai"
+
+			var oTrack={
+				"name": key+"_"+sample+"_"+cb,
+				"url": bam_path,
+				"indexURL": index_path,
+				"format": "bam",
+				"type": "alignment",
+
+				"color": colors[i], //set colors: red
+
+				showAlignments: false,
+
+				height:30, //total height: default 300
+				coverageTrackHeight:25, //coverage height: default 50
+				alignmentRowHeight:0, //height of reads, default 14 per reads;
+			}
+
+			options.tracks.push(oTrack);
+		}
+	}
+
+
+
+	// add bed file
+	var oBed={
+		"name": "CD4 PBMC",
+		"type": "annotation",
+		"format": "bed",
+		//"url": "http://x.biomooc.com:8892/list/annotate/bed/pas_bed/pas_40820.bed",
+		"url": "http://j3.biomooc.com:8099/list/annotate/bed/pas_bed/pas_40820.bed",
+		"color": "red",
+		height:50, //total height: default 300
+	}
+	options.tracks.push(oBed);
+	// add bed file of pA sites
+	var oBed={
+		"name": "polyA DB2(hg38)",
+		"type": "annotation",
+		"format": "bed",
+		//"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"url": "http://j3.biomooc.com:8090/list/ref/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"color": "red",
+		height:50, //total height: default 300
+	}
+	options.tracks.push(oBed);
+
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			browser.search( getUrlParam("gene").toUpperCase() ); //'EGFR'
+			console.log("Created IGV browser");	
+		})
+}
+
+
+addEvent(window,'load',function(){
+	//1.request url to R API
+	// http://j3.biomooc.com:8895/cid?cellType=time&gene=MSL1&n=2
+	// {"0h":["TCGGGCCT_0hRep2","AAACTTAG_0hRep2"],
+	//	"18h":["TCACCCTT_18hRep1","GGAGATGC_18hRep1"],"48h":["TGAGGAAC_48hRep3","TTCTCGTG_48hRep3"]}
+	var url="http://j3.biomooc.com:8895/cid?"; //cellType=HeLa2&n=5&gene=GRB10
+	url += "cellType="+getUrlParam("cellType")+"&";
+	url += "n="+getUrlParam("n")+"&";
+	url += "gene="+getUrlParam("gene").toUpperCase(); //human gene should be up case
+	console.log(">>>url: ", url)
+	//2. request the cell id
+	ajax(url, success=function(x){
+		var x=JSON.parse(x);
+		console.log(x)
+		init(x);
+	})
+	//3. browser
+	// http://j3.biomooc.com:8090/list/index6.html?cellType=time&gene=MSL1&n=2
+});
+</script>
