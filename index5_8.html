@@ -55,7 +55,7 @@ var oBed={
 	"name": "polyA DB2",
 	"type": "annotation",
 	"format": "bed",
-	"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+	"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 	"color": "red",
 	height:50, //total height: default 300
 }
@@ -80,7 +80,7 @@ for(var j=0; j<phases.length; j++){
 		if(i>1){ continue; }
 
         var key = phase+"_rep"+i;
-        var bam_path = "http://z.biomooc.com:8892/list/map/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/HeLa_Fucci/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "HeLa_"+key,
 			"url":     bam_path ,
@@ -107,7 +107,7 @@ for(var j=0; j<phases.length; j++){
 		if(i>1){ continue; }
 
         var key = "U2OS_"+phase+"_rep"+i;
-        var bam_path = "http://z.biomooc.com:8892/list/map/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/HeLa_Fucci/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": key,
 			"url":     bam_path ,
@@ -139,7 +139,7 @@ for(var j=0; j<SRR.length; j++){
 	if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/hESC/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/hESC/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "hESC_" + (j>2?"2_":"") + "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -166,7 +166,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/293T/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/293T/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "293T"+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -196,7 +196,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": cellname + "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -225,7 +225,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/nerve/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/nerve/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "nerve" + "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -254,7 +254,7 @@ for(var j=0; j<SRR.length; j++){
 	if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": 'brain_'+ cellname + "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -284,7 +284,7 @@ for(var j=0; j<SRR.length; j++){
 	if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": 'brain_'+ cellname + "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -316,7 +316,7 @@ for(var j=0; j<SRR.length; j++){
 	if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/Jurkat/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/Jurkat/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "Jurkat_"+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -344,7 +344,7 @@ for(var j=0; j< SRR.length; j++){
 	if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/MOLT-4/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/MOLT-4/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "MOLT-4"+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -375,7 +375,7 @@ for(var j=0; j< SRR.length; j++){
 	if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellType+"/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellType+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": cellType+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -409,7 +409,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/HL60/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/HL60/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "HL60_"+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -444,7 +444,7 @@ for(var j=0; j<SRR.length; j++){
 	}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/kasumi-1/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/kasumi-1/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "Kasumi-1_"+ (j>2?"1":"2")+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -471,7 +471,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/NB4/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/NB4/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "NB4_"+(j>2?"kd":"wt")+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -500,7 +500,7 @@ for(var j=0; j< SRR.length; j++){
 	if( (j%3) >=1 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/U937/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/U937/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "U937_"+(j>2?"_shCtrl":'wrong?') +"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -535,7 +535,7 @@ for(var j=0; j< SRR.length; j++){
 
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/THP-1/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/THP-1/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "THP-1_"+ types[ Math.floor(j / 4) ] +"_rep"+ ((j%4)+1),
 			"url":     bam_path ,
@@ -565,7 +565,7 @@ for(var j=0; j< SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/MV4-11/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/MV4-11/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "MV4-11_"+ "_rep"+ ((j%2)+1),
 			"url":     bam_path ,
@@ -594,7 +594,7 @@ for(var j=0; j< SRR.length; j++){
 	if( (j%3) >=1 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/HEL/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/HEL/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "HEL_"+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -624,7 +624,7 @@ for(var j=0; j< SRR.length; j++){
 	if( (j%3) >=1 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/OCI-AML3/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/OCI-AML3/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "OCI-AML3_"+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -654,7 +654,7 @@ var oBed={
 		"name": "polyA DB2",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 		"color": "red",
 		height:50, //total height: default 300
 	}
@@ -663,7 +663,7 @@ var oBed={
 		"name": "polyA DB3",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB3-liftover.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB3-liftover.bed",
 		"color": "black",
 		height:50, //total height: default 300
 	}

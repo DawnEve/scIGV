@@ -23,6 +23,8 @@ F12 console:
 '2.12.2'
 ```
 
+> Examples & description: [docs/index.html](http://j3.biomooc.com:8090/list/docs/index.html)
+
 
 ## lean IGV.js
 ```

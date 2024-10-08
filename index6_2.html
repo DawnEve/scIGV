@@ -95,8 +95,9 @@ var hg19_local={
 var options ={
 	//genome: "hg19",
 	reference: hg19_local,
-	locus: "chr17:26,654,969-26,656,844", //IFT20
+	//locus: "chr17:26,654,969-26,656,844", //IFT20
 	//locus: "chr1:246,928,887-246,933,873", //SCCPDH
+	locus: "chr3:107,760,248-107,770,786", //CD47
 	tracks: []
 };
 
@@ -137,7 +138,7 @@ var init = function(){
 		console.log("adding track",cell_info2[i]);
 		
 		var cell=cell_info2[i];
-        var bam_path="http://x.biomooc.com:8892/list/chenxi/T/liuhy/cluster/Gra.3A_1c.cid/bam/"+cell[0]+"."+cell[1]+".bam";
+        var bam_path="http://j3.biomooc.com:8892/list/chenxi/T/liuhy/cluster/Gra.3A_1c.cid/bam/"+cell[0]+"."+cell[1]+".bam";
 		var index_path=bam_path+".bai"
 		
 		var oTrack={
@@ -160,10 +161,12 @@ var init = function(){
 
 	// add bed file of pA sites
 	var oBed={
-			"name": "polyA site",
+			"name": "polyA DB2",
 			"type": "annotation",
 			"format": "bed",
-			"url": "http://x.biomooc.com:8892/file/apa/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+			//"url": "http://j3.biomooc.com:8891/file/apa/191111Figure/f2/validation/pas_bed/pasV5_20222.bed",
+			//"url": "http://j3.biomooc.com:8099/list/annotate/bed/pas_bed/pas_40820.bed", //hg38
+			"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg19.PolyADB2.bed", // /datapool/wangjl/rsa/polyA_DB/hg19.PolyADB2.bed
 			"color": "red",
 			height:50, //total height: default 300
 		}

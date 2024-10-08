@@ -56,7 +56,7 @@ var oBed={
 	"name": "polyA DB2",
 	"type": "annotation",
 	"format": "bed",
-	"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+	"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 	"color": "red",
 	height:50, //total height: default 300
 }
@@ -82,7 +82,7 @@ for(var j=0; j<phases.length; j++){
 		//if(i>1){ continue; }
 
         var key = phase+"_rep"+i;
-        var bam_path = "http://z.biomooc.com:8892/list/map/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/HeLa_Fucci/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "HeLa_"+key,
 			"url":     bam_path ,
@@ -109,7 +109,7 @@ for(var j=0; j<phases.length; j++){
 		//if(i>1){ continue; }
 
         var key = "U2OS_"+phase+"_rep"+i;
-        var bam_path = "http://z.biomooc.com:8892/list/map/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/HeLa_Fucci/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": key,
 			"url":     bam_path ,
@@ -152,7 +152,7 @@ for(var j=0; j<SRR.length; j++){
 	//if( (j%3) >=2 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": cellname + "_"+ times[j],
 			"url":     bam_path ,
@@ -179,7 +179,7 @@ var oBed={
 		"name": "polyA DB2",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 		"color": "red",
 		height:50, //total height: default 300
 	}
@@ -188,7 +188,7 @@ var oBed={
 		"name": "polyA DB3",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB3-liftover.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB3-liftover.bed",
 		"color": "black",
 		height:50, //total height: default 300
 	}

@@ -56,7 +56,7 @@ var oBed={
 	"name": "polyA DB2",
 	"type": "annotation",
 	"format": "bed",
-	"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+	"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 	"color": "red",
 	height:50, //total height: default 300
 }
@@ -92,7 +92,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": cellname + "_" + names[j], //+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -115,7 +115,7 @@ for(var j=0; j<SRR.length; j++){
 
 
 //primary: CD34 healthy v2 3'READS
-var cellname="CD34_3READS"
+var cellname="CD34/3READS"
 var SRR = ["SRR11272944", "SRR11272945", //heathy x2
     "SRR11272946", "SRR11272947", "SRR11272948", "SRR11272949", //AML
     "SRR11272950", "SRR11272951", "SRR11272952", "SRR11272953"] //BCF
@@ -127,7 +127,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/"+cellname+"/short_"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/short_"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": cellname + "_" + names[j], //+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -163,7 +163,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/kasumi-1/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/kasumi-1/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "Kasumi-1_"+ ['', 'wt', 'kd1', 'kd2'][types[j]], //+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -196,7 +196,7 @@ for(var j=0; j<SRR.length; j++){
 	var phase = SRR[j];
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/kasumi-1_3READS/short_"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/kasumi-1/3READS/map/short_"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "Kasumi-1_3READS_"+ ['wt', 'kd1', 'kd2'][types[j]], //+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -226,7 +226,7 @@ for(var j=0; j<SRR.length; j++){
     if( (j%3) >=1 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/NB4/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/NB4/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "NB4_"+(j>2?"kd":"wt")+"_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -257,7 +257,7 @@ for(var j=0; j< SRR.length; j++){
     if( (j%3) >=1 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/MV4-11/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/MV4-11/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "MV4-11_"+ "_rep"+ ((j%2)+1),
 			"url":     bam_path ,
@@ -288,7 +288,7 @@ for(var j=0; j< SRR.length; j++){
 	if( (j%3) >=1 ){continue;}
 	//for(var i=1; i<3; i++){
         var key = phase;
-        var bam_path = "http://z.biomooc.com:8892/list/OCI-AML3/"+key+"_Aligned.sortedByCoord.out.bam";
+        var bam_path = "http://j3.biomooc.com:8891/list/OCI-AML3/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
 			"name": "OCI-AML3_"+ "_rep"+ ((j%3)+1),
 			"url":     bam_path ,
@@ -315,7 +315,7 @@ var oBed={
 		"name": "polyA DB2",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 		"color": "red",
 		height:50, //total height: default 300
 	}
@@ -324,7 +324,7 @@ var oBed={
 		"name": "polyA DB3",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB3-liftover.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB3-liftover.bed",
 		"color": "black",
 		height:50, //total height: default 300
 	}

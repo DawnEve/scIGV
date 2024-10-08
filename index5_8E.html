@@ -2,7 +2,7 @@
 <span>
 help: https://github.com/igvteam/igv.js/wiki 
 | 
-test5_9: multiple bams, hg38 <b class="red">BMMC(10x)</b>, add using js; {colorBy: "sample"}; {hg38: Gapdh, Actb, };
+test5_8E: multiple bams, hg38 <b class="red">Bulk CD4+T after activation(GSE135118)</b>, add using js; color by time;
 </span>
 <style>
 .red{color:red;}
@@ -41,46 +41,28 @@ var hg38_local={
 	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
 }
 
-// refer in local
-var hg19_local={
-	"id": "hg19",
-	"name": "Human (GRCh37/hg19)",
-	"fastaURL": "ref/hg19/hg19.fasta", //?someRandomSeed=0
-	"indexURL": "ref/hg19/hg19.fasta.fai",
-	"cytobandURL": "ref/hg19/cytoBand.txt",
-	"aliasURL": "ref/hg19/hg19_alias.tab",
-	
-	"tracks": [
-	  {
-		"id": "hg19",
-		//"name": "Refseq Genes",
-		"name": "Human (GRCh37/hg19)",
-		"format": "refgene",
-
-		"url": "ref/hg19/ncbiRefSeq.sorted.txt.gz",
-		"indexURL": "ref/hg19/ncbiRefSeq.sorted.txt.gz.tbi",
-
-		"visibilityWindow": -1,
-		"supportsWholeGenome": false,
-		"removable": false,
-		"order": 1000000,
-		height:200,   //height of ref track
-		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
-	  }
-	],
-	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
-}
-
-
-
 //1. settings
 var options = {
     //genome: "hg38",
-    reference: hg19_local,
-    locus: "chr1:246,929,957-246,932,007",
-    //locus: "chr10:78,039,965-78,041,277",
+    reference: hg38_local,
+    locus: 'chr1:246,766,264-246,771,021', //"chr10:78,039,965-78,041,277",
     tracks: []
 };
+
+
+
+// add bed file of pA sites
+var oBed={
+	"name": "polyA DB2",
+	"type": "annotation",
+	"format": "bed",
+	"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+	"color": "red",
+	height:50, //total height: default 300
+}
+options.tracks.push(oBed);
+
+
 
 
 var colors=[ //"#A80000", 
@@ -89,41 +71,47 @@ var colors=[ //"#A80000",
 	"#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB",
 	"#40E0D0","#5F9EA0"]
 
-//add whole bam
-var sampleColors = ["blue", "red", "green"]
-var clusters = ["12", "19", "20"]
-var samples = ["donor1", "donor2", "AML027", "AML035"]
 
-//for(var i=1; i<4; i++){
-var counter=-1
-for(var j in clusters){
-    var cluster = clusters[j];
-    for(var i in samples){
-        var sample =samples[i];
-        counter++;
 
-        var key = sample+"_cluster"+cluster;
-        var bam_path = "http://j3.biomooc.com:8891/list/10xBMMC/bam/"+key+".bam";
+//CD4T https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE135118
+var cellname="CD4T"
+var SRR = [
+    "SRR9861777", "SRR9861778", "SRR9861779", "SRR9861780", "SRR9861781", "SRR9861782", "SRR9861783", "SRR9861784", "SRR9861785", "SRR9861786", 
+    "SRR9861787", "SRR9861788", "SRR9861789", "SRR9861790", "SRR9861791", "SRR9861792", "SRR9861793", "SRR9861794", "SRR9861795", "SRR9861796", 
+    "SRR9861797", "SRR9861798", "SRR9861799", "SRR9861800", "SRR9861801", "SRR9861802", "SRR9861803"
+]
+var age=[46, 32, 26];
+var sex=["m", "m", "f"];
+
+var time=[0, 0, 0, 8, 8, 8, 48, 48, 48, 8, 8, 8, 48, 48, 48, 8, 8, 8, 48, 48, 48, 8, 8, 8, 48, 48, 48];
+var treat=["Naïve", "Naïve", "Naïve", "Naïve", "Naïve", "Naïve", "Naïve", "Naïve", "Naïve", "aCD28", "aCD28", "aCD28", "aCD28", "aCD28", "aCD28", "aCD3", "aCD3", "aCD3", "aCD3", "aCD3", "aCD3", "aCD3CD28", "aCD3CD28", "aCD3CD28", "aCD3CD28", "aCD3CD28", "aCD3CD28"];
+
+for(var j=0; j<SRR.length; j++){
+	var phase = SRR[j];
+	//if( (j%3) >=2 ){continue;}
+	//for(var i=1; i<3; i++){
+        var key = phase;
+        var bam_path = "http://j3.biomooc.com:8891/list/"+cellname+"/map/"+key+"_Aligned.sortedByCoord.out.bam";
 		var oTrack={
-			"name": key,
+			//"name": cellname + "_"+ times[j],
+			"name": treat[j] +"_"+ time[j] +"("+sex[j%3].toUpperCase()+","+age[j%3]+")",
 			"url":     bam_path ,
 			"indexURL": bam_path + ".bai",
 			"format": "bam",
 			"type": "alignment",
-			"color": (counter %4) <2? "blue":"red",
+			//"color": colors[ time[j]==0? 3:(time[j]==8? 1:4) ], //j<14?"deeppink":"#7BA947",
+			"color": time[j]==0? "#FFA500":(time[j]==8? '#FF1493':'#4876FF'),
 			//colorBy: "strand", // for alignment read
 			showAlignments: !true,
 
 			height:30, //150, //total height: default 300
 			coverageTrackHeight:30, //coverage height: default 50
-			alignmentRowHeight:5, //height of reads, default 14 per reads;
+			alignmentRowHeight:0, //height of reads, default 14 per reads;
 		}
-		console.log("loading bam2: ", key)
+        console.log("loading bam: ", key)
 		options.tracks.push(oTrack);
-	}
+	//}
 }
-
-
 
 
 
@@ -132,18 +120,18 @@ var oBed={
 		"name": "polyA DB2",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg19.PolyADB2.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB2-liftover.bed",
 		"color": "red",
-		height:40, //total height: default 300
+		height:50, //total height: default 300
 	}
 options.tracks.push(oBed);
 var oBed={
 		"name": "polyA DB3",
 		"type": "annotation",
 		"format": "bed",
-		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg19.PolyADB3.bed",
+		"url": "http://j3.biomooc.com:8891/list/polyA_DB/hg38.PolyADB3-liftover.bed",
 		"color": "black",
-		height:60, //total height: default 300
+		height:50, //total height: default 300
 	}
 options.tracks.push(oBed);
 
@@ -153,9 +141,7 @@ options.tracks.push(oBed);
 
 
 
-
-
-//2. run IGV 
+//2. run IGV
 var browser;
 
 var igvDiv = document.getElementById("igv-div");

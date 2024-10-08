@@ -87,13 +87,14 @@ for(var i=0; i<result["pA reads"].length; i++){
             var path0="06_dedup/18hRep2_"
 			suffix=".dedup.bam"
         }
-    
-    
+
+
 		console.log(j, "adding track", type, result[type][i], "color:", colors[j]);
 
 		var cid=result[type][i];
-		var bam_path="http://x.biomooc.com:8892/list/18hRep2/"+path0+cid+ suffix;
+		var bam_path="http://j3.biomooc.com:8892/list/chenxi/PBMC/18hRep2/"+path0+cid+ suffix;
 		var index_path=bam_path+".bai"
+
 
 		var oTrack={
 			"name": type+"_["+i+"]_"+result[type][i],
@@ -125,8 +126,8 @@ for(var j in arr){
 		if(h==0 && i==3){ continue;}
 		var oTrack={
 			"name": h+"hRep"+i,
-			"url":      "http://x.biomooc.com:8892/list/"+h+"hRep"+i+"/07_merged/merged.sort.bam",
-			"indexURL": "http://x.biomooc.com:8892/list/"+h+"hRep"+i+"/07_merged/merged.sort.bam.bai",
+			"url":      "http://j3.biomooc.com:8892/list/chenxi/PBMC/"+h+"hRep"+i+"/07_merged/merged.sort.bam",
+			"indexURL": "http://j3.biomooc.com:8892/list/chenxi/PBMC/"+h+"hRep"+i+"/07_merged/merged.sort.bam.bai",
 			"format": "bam",
 			"type": "alignment",
 

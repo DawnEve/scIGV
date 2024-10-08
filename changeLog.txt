@@ -79,29 +79,32 @@ v0.0.6-9@hzBig index8.html 使用 igv.js，后者使用本地文件和接口，�
 	接口名字: /api2/genomes/locus 由另一个项目 SeqReportSys 提供
 v0.0.7-0@hzBig index8.html for hg19, index8_2 for hg38; update api in SRS [2023.9.19]
 
-v0.0.6-7@HZBig add index 5_8, 5_8B for AML cell line; 5_9,5_9B for scRNA-seq of BMMC AML vs. ctrl;
-v0.0.6-8@HZBig add index 5_8C for cell cycle MDA-MB-231; [2023.11.16]
+v0.0.6-7B@HZBig add index 5_8, 5_8B for AML cell line; 5_9,5_9B for scRNA-seq of BMMC AML vs. ctrl;
+v0.0.6-8B@HZBig add index 5_8C for cell cycle MDA-MB-231; [2023.11.16]
 	add polyA_DB2 3, in hg19, hg38
-v0.0.6-9@HZBig add index 5_8D for cell cycle HeLa; [2023.11.17]
-v0.0.7-0@sust how to add ajax from R API in index6.html [2024.3.13]
+v0.0.6-9B@HZBig add index 5_8D for cell cycle HeLa; [2023.11.17]
+v0.0.7-0B@sust how to add ajax from R API in index6.html [2024.3.13]
 	$ ls *html  | xargs grep -in "ajax" --color=auto
+
 v0.0.7-1@sust update index6.html [2024.3.28]
 v0.0.7-2@picb update index6.html, using local J3 server [2024.4.25]
 v0.0.7-3@picb add index6B.html, using gencode gtf file [2024.7.24]
 ###### pull from server: 
-v0.0.7-3@picb merge后：新增了 index5_8A-D, 5_9A-B系列 [2024.10.8]
+v0.0.7-3B@picb merge后：新增了 index5_8A-D, 5_9A-B系列 [2024.10.8]
 	原来的 index5_7.html 修改一行坐标，可接受；index6.html 修改较多，以新版为主吧。
 	Merge branch 'master' of eve.github.com:DawnEve/scIGV
 		# Conflicts:
 		#	changeLog.txt
 v0.0.7-4@picb merge
+v0.0.7-5@picb add GEO bulk CD4+T IGV in index5_8E; add help in docs/index.html [2024.10.8]
+	update port&dir in index5_6 to 5_8
 
 # ==> commit
 # =========> push to origin master: https://github.com/DawnEve/scIGV
-# =========> push to origin master: git@gitee.com:dawnEve/scIGV.git
 # ===============> push to github monthly:  https://github.com/DawnEve/scIGV
 
 todo: R/ string, df;
+# =========> push to origin master: git@gitee.com:dawnEve/scIGV.git
 
 
 
