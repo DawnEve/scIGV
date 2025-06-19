@@ -115,6 +115,18 @@ for(var j=0; j<SRR.length; j++){
 
 
 
+// add bed file
+var oBed={
+    "name": "CD4 PBMC",
+    "type": "annotation",
+    "format": "bed",
+    //"url": "http://x.biomooc.com:8892/list/annotate/bed/pas_bed/pas_40820.bed",
+    "url": "http://j3.biomooc.com:8099/list/annotate/bed/pas_bed/pas_40820.bed",
+    "color": "red",
+    height:50, //total height: default 300
+}
+options.tracks.push(oBed);
+
 // add bed file of pA sites
 var oBed={
 		"name": "polyA DB2",

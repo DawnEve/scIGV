@@ -7,6 +7,7 @@ Aim: desc of each html file
 <p><b>Format</b>:<br>
 prefix filename: desc like sample info, reference, ...</p>
 
+
 <pre>
 Prefix meaning:
 - 表示不确定能用，仅示例
@@ -14,6 +15,12 @@ Prefix meaning:
 + 对本项目有帮助
 
 - URL: http://j3.biomooc.com:8090/list/docs/index.html
+- IGV.js docs: https://igv.org/doc/desktop/#UserGuide/tracks/annotations/
+
+How to start?
+- #Left1:8090; Left2:8099; Left3:8892; left4:8891;  Right3:R 8895
+- More: http://blog2.dawneve.cc/index.php?k=server&id=0_1#8
+
 
 
 <h2>测试 IGV.js</h2>
@@ -43,7 +50,7 @@ Prefix meaning:
 + index5_8B.html: Kasumi-1 KD, CD34+Blood/BM, J3:8891
 + index5_8C.html: HeLa Fucci(GSE104736) & MDA-MB-231
 + index5_8D.html: HeLa Fucci(GSE104736) & HeLa
-+ index5_8E.html: bulk CD4+T cell activation
++ index5_8E.html: bulk CD4+T cell activation(可用于sc2对照)
 
 
 + index5_9.html: BMMC(10x) by cluster
@@ -57,12 +64,18 @@ Prefix meaning:
 + index6B.html: same as 1, but use gencode GTF
 - index6_2: 10x data from liuhy
 + index6_3.html: RNA cluster level(0-11), gencode GTF like index6B.html;
++ index6_4.html: HLA-HD RNA-seq, gencode GTF like index6B.html
++ index6_5.html: HLA-HD RNA-seq, gencode GTF like index6B.html, for alleles SNP site
++ index6_5B.html: HLA-HD RNA-seq, gencode GTF like index6B.html, for alleles SNP site: HLA-DRB1
++ index6_5C.html: HLA-HD RNA-seq, gencode GTF like index6B.html, for alleles SNP site: 自动化，带参数: pid=p1, gene=C, sid=sampleID
+    http://j3.biomooc.com:8090/list/index6_5C.html?pid=p1&gene=B&sid=24B74088
 
 
-
+    
 <hr>
 <h2>SNP</h2>
 - index7.html Leukimea SNP
+- index7_2.html wjl hair RNA-seq to view SNP
 
 <hr>
 <h2>nanopore</h2>
