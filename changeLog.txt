@@ -100,6 +100,7 @@ v0.0.7-5@picb add GEO bulk CD4+T IGV in index5_8E; add help in docs/index.html [
 	update port&dir in index5_6 to 5_8
 v0.0.7-6@picb add sc2/index6_3.html RNA-based cluster level [2024.12.6]
 v0.0.7-7@picb update index6_5C.html?pid=p1&gene=B&sid=24B74088 [2025.6.18]
+v0.0.7-8@picb add index6_3B.html for sample view [2025.11.27]
 
 
 # ==> commit

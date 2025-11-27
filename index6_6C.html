@@ -1,0 +1,289 @@
+<meta charset=utf8>
+<style>
+.red{color:red;}
+</style>
+<span>
+help: https://github.com/igvteam/igv.js/wiki
+|
+test6_6C: custom hla ref(gtf); HLA allele mapping;
+Use <span class=red>test custom GTF | use 3 allele names as chr name</span>
+</span>
+
+<script src="js/igv.min.js"></script>
+<div id="igv-div"></div>
+
+<script>
+// ********************* tools *********************
+/* ?sid=24B74088
+* http://j3.biomooc.com:8090/list/index6_6B.html?sid=24B74088
+*/
+
+//get parameters from URL
+function getUrlParam(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+	var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+	if (r != null) return unescape(r[2]); return null; //返回参数值
+}
+
+//bind event to object
+function addEvent(obj,ev,fn){
+	if(obj.addEventListener){
+		//ff:addEventListener
+		obj.addEventListener(ev,fn,false);
+	}else{
+		//IE:attachEvent
+		obj.attachEvent('on'+ev,fn);
+	}
+}
+
+//ajax get file contents;
+function ajax(fileName, success){
+	var xmlhttp=new XMLHttpRequest(); //1.获取对象
+	//2.绑定回调函数
+	xmlhttp.onreadystatechange=function(){
+		if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			var text =xmlhttp.responseText;
+			//替换html标签为实体
+			//text = convertHTML(text);
+			success(text);
+		}
+	}
+	//3.设定访问的url
+	xmlhttp.open("GET", fileName, true);
+	//4.发送请求
+	xmlhttp.send();
+}
+
+//var i=2; //放大倍数， height 的系数
+
+// refer in local: not use
+var hg38_local={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/hg38.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/hg38.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "Refseq Genes",
+		"format": "refgene",
+		"id": "hg38_genes",
+		"url": "ref/hg38/ncbiRefSeq.txt.gz",
+		"indexURL": "ref/hg38/ncbiRefSeq.txt.gz.tbi",
+		"visibilityWindow": -1,
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+		height:250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+// refer in local: gencode
+var hg38_local_gencode={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hg38/gencode/GRCh38.p13.genome.fa", //?someRandomSeed=0
+	"indexURL": "ref/hg38/gencode/GRCh38.p13.genome.fa.fai",
+	"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	"aliasURL": "ref/hg38/hg38_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "GRCh38",
+		"format": "gtf",
+        "type": "annotation",
+		"id": "hg38_genes",
+
+		"url": "ref/hg38/gencode/GRCh38.p13.sorted.gtf.gz",
+		"indexURL": "ref/hg38/gencode/GRCh38.p13.sorted.gtf.gz.tbi",
+
+		"visibilityWindow": -1,
+        //"visibilityWindow": 10000000, // 轨道的可见窗口大小
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+
+		"height":250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+
+
+// refer in local: HLA fasta, gtf
+var hg38_local_HLA={
+	"id": "hg38",
+	"name": "Human (GRCh38/hg38)",
+	"fastaURL": "ref/hla/test1/hla_p1.fa", //?someRandomSeed=0 //修改1
+	"indexURL": "ref/hla/test1/hla_p1.fa.fai",                 //修改2
+	//"cytobandURL": "ref/hg38/cytoBandIdeo.txt.gz",
+	//"aliasURL": "ref/hla/hla_alias.tab",
+	
+	"tracks": [
+	  {
+		"name": "hg38_HLA",
+		"format": "gtf",
+        "type": "annotation",
+		"id": "HLA_genes",
+
+		"url":      "ref/hla/test1/hla_p1.sorted.gtf.gz",       //修改3
+		"indexURL": "ref/hla/test1/hla_p1.sorted.gtf.gz.tbi",   //修改4
+
+		"visibilityWindow": -1,
+        //"visibilityWindow": 10000000, // 轨道的可见窗口大小
+		"supportsWholeGenome": false,
+		"removable": false,
+		"order": 1000000,
+
+		"height":250,   //height of ref track
+		"infoURL": "https://www.ncbi.nlm.nih.gov/gene/?term=$$"  //links to ncbi gene
+	  }
+	],
+	"chromosomeOrder": "chr1, chr2, chr3, chr4, chr5, chr6, chr7, chr8, chr9, chr10, chr11, chr12, chr13, chr14, chr15, chr16, chr17, chr18, chr19, chr20, chr21, chr22, chrX, chrY"
+}
+
+// ********************* get parms *********************
+var pid=getUrlParam("pid")
+var gene=getUrlParam("gene")
+var sid=getUrlParam("sid")
+
+console.log("loading pid:", pid, ", gene:",gene, ", sid:",sid)
+
+var locations={
+    A:"chr6:29,941,531-29,946,870",
+    B:"chr6:31,352,874-31,358,179",
+    C:"chr6:31,267,748-31,273,092",
+    DRB1:"chr6:32,577,774-32,590,695",
+    DQB1:"chr6:32,658,466-32,667,657",
+    DPB1:"chr6:33,074,989-33,090,696",
+}
+
+var options =
+{
+	//genome: "hg38",
+	//init screen
+	//"locus": "chr21:45,512,381-45,521,866",
+	//"locus": "chr6:29,941,531-29,946,870", //HLA-A
+	//"locus": "chr6:31,352,874-31,358,179", //HLA-B
+	//"locus": "chr6:31,267,748-31,273,092", //HLA-C
+	//locus": "chr6:32,577,774-32,590,848", //HLA-DRB1
+	//locus: locations[gene],
+	"locus": "B*54_01_01_01:285-2972", //HLA-B    //修改5
+	"locus": "DQB1*04_01_01_01:285-7231", //HLA-DQB1    //修改5
+
+	reference: hg38_local_HLA,
+	tracks: []
+};
+
+
+var colors=["#FFA500", "#FF1493", "#4876FF",
+"#DC143C","#0000FF","#20B2AA","#FFA500","#9370DB","#98FB98","#F08080","#1E90FF","#7CFC00","#FFFF00",
+            "#808000","#FF00FF","#FA8072","#7B68EE","#9400D3","#800080","#A0522D","#D2B48C","#D2691E","#87CEEB","#40E0D0","#5F9EA0",
+            "#FF1493","#0000CD","#008B8B","#FFE4B5","#8A2BE2","#228B22","#E9967A","#4682B4","#32CD32","#F0E68C","#FFFFE0","#EE82EE",
+            "#FF6347","#6A5ACD","#9932CC","#8B008B","#8B4513","#DEB887"
+]
+
+/*
+var results={
+	"common":[ pid+"_"+gene+"_common"],
+	"donor":[pid+"_"+gene+"_donor"],
+	"pre":[pid+"_"+gene+"_pre"],
+    "sample":[sid]
+}
+
+$ ls -lth bam/2/*.bai
+-rw-r--r--. 1 wangjl jinlab 96 Jun 20 16:34 bam/2/24B74088.mapped.fix2.rmdup.bam.bai
+-rw-r--r--. 1 wangjl jinlab 96 Jun 20 16:31 bam/2/24B74088.mapped.bam.bai
+-rw-r--r--. 1 wangjl jinlab 96 Jun 20 16:28 bam/2/24B74088.sorted.bam.bai
+*/
+var results={
+    "scoreMinC20":[sid+".mapped.fix2.rmdup"],
+    /*
+    "3AlleleRef":[sid+".mapped.fix2.rmdup"],
+    "scoreMinC20":[sid+".2.mapped.fix2.rmdup"],
+    "Common":[sid+".C.mapped.fix2.rmdup"],
+    "Donor":[sid+".D.mapped.fix2.rmdup"],
+    "Patient":[sid+".P.mapped.fix2.rmdup"],
+    */
+	//"common":["p1_DRB1_common"],
+	//"donor":["p1_DRB1_donor"],
+	//"pre":["p1_DRB1_pre"],
+    //"p1":["24B74088"]
+}
+
+
+// init the browser
+function init(results){
+	var i=-1
+	for(var key2 in results){
+		i++;
+		var arr=results[key2]
+		for(var j in arr){
+			var val=arr[j]
+			//var bam_path="http://j3.biomooc.com:8099/list/"+sample+"/06_dedup/"+sample+"_"+cb+".dedup.bam";
+			//http://j3.biomooc.com:8891/list/ln/24B74088.Aligned.sortedByCoord.out.bam
+			//var bam_path="http://j3.biomooc.com:8891/list/ln/"+sid+".Aligned.sortedByCoord.out.bam";
+			//var bam_path="http://j3.biomooc.com:8891/list/ln/test/alleles/"+pid+"/"+val+".chr6.sorted.bam";
+			var bam_path="http://j3.biomooc.com:8891/list/ln/test2/p1/bam/"+val+".bam"; //p1/bam/24B74088.mapped.fix2.rmdup.bam
+			var index_path=bam_path+".bai"
+			console.log(pid, sid, gene, ":", val)
+
+			var oTrack={
+				"name": key2+"|"+sid,
+				"url": bam_path,
+				"indexURL": index_path,
+				"format": "bam",
+				"type": "alignment",
+
+				//"color": colors[i], //set colors: red
+
+				showAlignments: true,
+
+				height:90, //total height: default 300
+				coverageTrackHeight:50, //coverage height: default 50
+				alignmentRowHeight:0, //height of reads, default 14 per reads;
+			}
+			options.tracks.push(oTrack);
+		}
+	}
+
+
+
+	// add bed file of SNV sites
+    for(var key2 in results){
+		var arr=results[key2]
+        if(key2=="sample"){continue;}
+		for(var vals in arr){
+			var val=arr[j]
+            var oBed={
+                "name": val,
+                "type": "annotation",
+                "format": "bed",
+                //"url": "http://z.biomooc.com:8892/list/polyA_DB/hg38.PolyADB2-liftover.bed",
+                //"url": "http://j3.biomooc.com:8090/list/ref/polyA_DB/hg38.PolyADB2-liftover.bed",
+                "url": "http://j3.biomooc.com:8891/list/ln/test/alleles/"+pid+"/"+val+".only.bed",
+                //alleles/p1/p1_DRB1_common.only.bed
+                "color": "red",
+                height:50, //total height: default 300
+            }
+            //options.tracks.push(oBed);
+        }
+    }
+
+	var igvDiv = document.getElementById("igv-div");
+	igv.createBrowser(igvDiv, options)
+		.then(function (browser) {
+			//browser.search( getUrlParam("gene").toUpperCase() ); //'EGFR'
+			console.log("Created IGV browser: HLA allele fasta");	
+		})
+}
+
+init(results)
+</script>
